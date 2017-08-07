@@ -17,8 +17,9 @@ import org.springframework.util.StringUtils;
 
 /**
  *
- * Use this class as an interceptor to log every request and response used by your RestTemplate
- * 
+ * Use this class as an interceptor to log every request and response used by
+ * your RestTemplate
+ *
  * @author zg2pro
  */
 public class LoggingRequestInterceptor implements ClientHttpRequestInterceptor {
@@ -34,8 +35,9 @@ public class LoggingRequestInterceptor implements ClientHttpRequestInterceptor {
     private final int maxBodyLength;
 
     /**
-     * default encoding to trace your http calls is UTF-8, it also uses a max body length in response or request equal to 10000 characters,
-     * to add an interceptor to a RestTemplate, use addInterceptors() method
+     * default encoding to trace your http calls is UTF-8, it also uses a max
+     * body length in response or request equal to 10000 characters, to add an
+     * interceptor to a RestTemplate, use addInterceptors() method
      */
     public LoggingRequestInterceptor() {
         super();
@@ -44,8 +46,10 @@ public class LoggingRequestInterceptor implements ClientHttpRequestInterceptor {
     }
 
     /**
-     * use this constructor to build the interceptor with custom values in encoding and maxBodyLength,
-     * to add an interceptor to a RestTemplate, use addInterceptors() method
+     * use this constructor to build the interceptor with custom values in
+     * encoding and maxBodyLength, to add an interceptor to a RestTemplate, use
+     * addInterceptors() method
+     *
      * @param encoding
      * @param maxBodyLength
      */
@@ -69,10 +73,10 @@ public class LoggingRequestInterceptor implements ClientHttpRequestInterceptor {
 
     private void traceRequest(HttpRequest request, byte[] body) throws IOException {
         logger.debug("===========================request begin================================================");
-        logger.debug("URI : " + request.getURI());
-        logger.debug("Method : " + request.getMethod());
+        logger.debug("URI : {}", request.getURI());
+        logger.debug("Method : {}", request.getMethod());
         if (body.length < maxBodyLength) {
-            logger.debug("Request Body : " + new String(body, encoding));
+            logger.debug("Request Body : {}", new String(body, encoding));
         }
         logger.debug("==========================request end================================================");
     }
@@ -104,8 +108,8 @@ public class LoggingRequestInterceptor implements ClientHttpRequestInterceptor {
 
     private void logResponse(ClientHttpResponse response, final BufferedReader bufferedReader, char[] buffer) throws IOException {
         logger.debug("============================response begin==========================================");
-        logger.debug("status code: " + response.getStatusCode());
-        logger.debug("status text: " + response.getStatusText());
+        logger.debug("status code: {}", response.getStatusCode());
+        logger.debug("status text: {}", response.getStatusText());
         if (bufferedReader.markSupported()) {
             writeBody(bufferedReader, buffer);
         }
