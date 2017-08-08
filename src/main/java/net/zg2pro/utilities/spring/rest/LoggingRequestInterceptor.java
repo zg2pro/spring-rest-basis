@@ -55,6 +55,9 @@ public class LoggingRequestInterceptor implements ClientHttpRequestInterceptor {
      */
     public LoggingRequestInterceptor(Charset encoding, int maxBodyLength) {
         super();
+        if (maxBodyLength < 1) {
+            throw new IllegalArgumentException("please set a limit to the body length writable in your logs");
+        }
         this.encoding = encoding;
         this.maxBodyLength = maxBodyLength;
     }
