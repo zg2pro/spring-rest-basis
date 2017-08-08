@@ -1,4 +1,4 @@
-package net.zg2pro.utilities.spring.rest;
+package net.zg2pro.utilities.spring.rest.interceptors;
 
 import java.io.BufferedReader;
 import java.io.IOException;

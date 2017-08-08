@@ -1,5 +1,6 @@
 package net.zg2pro.utilities.spring.rest;
 
+import net.zg2pro.utilities.spring.rest.interceptors.LoggingRequestInterceptor;
 import java.util.ArrayList;
 import java.util.List;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
