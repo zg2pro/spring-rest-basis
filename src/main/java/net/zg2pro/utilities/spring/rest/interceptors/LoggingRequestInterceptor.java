@@ -37,25 +37,13 @@ public class LoggingRequestInterceptor implements ClientHttpRequestInterceptor {
     private static final Level DEFAULT_LEVEL = Level.DEBUG;
 
     private final static Logger logger = LoggerFactory.getLogger(LoggingRequestInterceptor.class);
+    private final static Level loggerLevel = loggerLevel();
 
     private final Charset encoding;
     private final int maxBodyLength;
-    private final Level level;
+    private final Level lriLevel;
 
-    /**
-     * default encoding to trace your http calls is UTF-8, it also uses a max
-     * body length in response or request equal to 10000 characters, as well as
-     * a DEBUG log level, to add an interceptor to a RestTemplate, use
-     * addInterceptors() method
-     */
-    public LoggingRequestInterceptor() {
-        super();
-        this.encoding = DEFAULT_ENCODING;
-        this.maxBodyLength = DEFAULT_BODY_LENGTH;
-        this.level = DEFAULT_LEVEL;
-    }
-
-    private Level loggerLevel() {
+    private static Level loggerLevel() {
         if (logger.isTraceEnabled()) {
             return TRACE;
         } else if (logger.isDebugEnabled()) {
@@ -70,7 +58,7 @@ public class LoggingRequestInterceptor implements ClientHttpRequestInterceptor {
     }
 
     private void log(String txt, Object... args) {
-        switch (level) {
+        switch (lriLevel) {
             case TRACE:
                 logger.trace(txt, args);
                 break;
@@ -89,8 +77,21 @@ public class LoggingRequestInterceptor implements ClientHttpRequestInterceptor {
     }
 
     /**
+     * default encoding to trace your http calls is UTF-8, it also uses a max
+     * body length in response or request equal to 10000 characters, as well as
+     * a DEBUG log lriLevel, to add an interceptor to a RestTemplate, use
+     * addInterceptors() method
+     */
+    public LoggingRequestInterceptor() {
+        super();
+        this.encoding = DEFAULT_ENCODING;
+        this.maxBodyLength = DEFAULT_BODY_LENGTH;
+        this.lriLevel = DEFAULT_LEVEL;
+    }
+
+    /**
      * use this constructor to build the interceptor with custom values in
-     * encoding and maxBodyLength, as well as an slf4j level, to add an
+     * encoding and maxBodyLength, as well as an slf4j lriLevel, to add an
      * interceptor to a RestTemplate, use addInterceptors() method
      *
      * @param encoding
@@ -103,16 +104,17 @@ public class LoggingRequestInterceptor implements ClientHttpRequestInterceptor {
         }
         this.encoding = encoding;
         this.maxBodyLength = maxBodyLength;
-        this.level = level;
+        this.lriLevel = level;
     }
 
     @Override
     public ClientHttpResponse intercept(HttpRequest request, byte[] body, ClientHttpRequestExecution execution) throws IOException {
-        if (loggerLevel().compareTo(level) > -1) {
+        boolean mustLog = loggerLevel.compareTo(lriLevel) > -1;
+        if (mustLog) {
             traceRequest(request, body);
         }
         ClientHttpResponse response = execution.execute(request, body);
-        if (loggerLevel().compareTo(level) > -1) {
+        if (mustLog) {
             traceResponse(response);
         }
         return response;
