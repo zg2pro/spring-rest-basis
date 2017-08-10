@@ -97,4 +97,5 @@ public class RestTemplateTest {
         ResponseEntity<String> resp = rt.getForEntity(MockedControllers.TEST_URL_GET, String.class);
         assertThat(resp.getBody()).isEqualTo(MockedControllers.TEST_RETURN_VALUE);
     }
+    
 }
