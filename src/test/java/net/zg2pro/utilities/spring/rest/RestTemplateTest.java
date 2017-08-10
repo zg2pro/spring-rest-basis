@@ -4,6 +4,7 @@ import java.nio.charset.StandardCharsets;
 import net.zg2pro.utilities.spring.rest.interceptors.LoggingRequestInterceptor;
 import java.util.ArrayList;
 import java.util.List;
+import net.zg2pro.utilities.spring.rest.template.Zg2proRestTemplate;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -85,6 +86,14 @@ public class RestTemplateTest {
                 new BufferingClientHttpRequestFactory(chrf),
                 lInterceptors
         ));
+        ResponseEntity<String> resp = rt.getForEntity(MockedControllers.TEST_URL_GET, String.class);
+        assertThat(resp.getBody()).isEqualTo(MockedControllers.TEST_RETURN_VALUE);
+    }
+    
+    @Test
+    public void testZg2Template(){
+        Zg2proRestTemplate z = new Zg2proRestTemplate();
+        rt.getRestTemplate().setRequestFactory(z.getRequestFactory());
         ResponseEntity<String> resp = rt.getForEntity(MockedControllers.TEST_URL_GET, String.class);
         assertThat(resp.getBody()).isEqualTo(MockedControllers.TEST_RETURN_VALUE);
     }
