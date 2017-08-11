@@ -9,7 +9,7 @@
     <artifactId>spring-rest-basis</artifactId>
     <name>spring-rest-basis</name>
     <packaging>jar</packaging>
-    <version>0.0.1-SNAPSHOT</version>
+    <version>0.1-SNAPSHOT</version>
     
     <properties>
         <java.version>8</java.version>
