@@ -54,7 +54,7 @@ class MockedControllers {
     String testLoggerLonngReply() {
         byte[] randomBytes = new byte[Integer.MAX_VALUE];
         new Random().nextBytes(randomBytes);
-        return new String(randomBytes);
+        return new String(randomBytes) + new String(randomBytes) + new String(randomBytes);
     }
 }
 
@@ -132,13 +132,15 @@ public class RestTemplateTest {
         assertNotNull(resp);
         resp = rt.getForEntity(MockedControllers.TEST_URL_GET_BLANK_REPLY, String.class);
         assertNotNull(resp);
-        List<ClientHttpRequestInterceptor> lInterceptors = new ArrayList<>();
-        //spring boot default log level is info
-        lInterceptors.add(new LoggingRequestInterceptor(StandardCharsets.UTF_8, 1000, Level.INFO));
-        Zg2proRestTemplate z2 = new Zg2proRestTemplate(z.getMessageConverters(), lInterceptors);
-        rt.getRestTemplate().setRequestFactory(z2.getRequestFactory());
-        resp = rt.getForEntity(MockedControllers.TEST_URL_GET, String.class);
-        assertThat(resp.getBody()).isEqualTo(MockedControllers.TEST_RETURN_VALUE);
+        for (Level l : Level.values()) {
+            List<ClientHttpRequestInterceptor> lInterceptors = new ArrayList<>();
+            //spring boot default log level is info
+            lInterceptors.add(new LoggingRequestInterceptor(StandardCharsets.UTF_8, 1000, l));
+            Zg2proRestTemplate z2 = new Zg2proRestTemplate(z.getMessageConverters(), lInterceptors);
+            rt.getRestTemplate().setRequestFactory(z2.getRequestFactory());
+            resp = rt.getForEntity(MockedControllers.TEST_URL_GET, String.class);
+            assertThat(resp.getBody()).isEqualTo(MockedControllers.TEST_RETURN_VALUE);
+        }
     }
 
 }
