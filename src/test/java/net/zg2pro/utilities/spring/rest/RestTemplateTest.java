@@ -5,6 +5,9 @@ import net.zg2pro.utilities.spring.rest.interceptors.LoggingRequestInterceptor;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+import static net.zg2pro.utilities.spring.rest.MockedControllers.TEST_URL_GET;
+import static net.zg2pro.utilities.spring.rest.MockedControllers.TEST_URL_GET_BLANK_REPLY;
+import static net.zg2pro.utilities.spring.rest.MockedControllers.TEST_URL_GET_LONG_REPLY;
 import net.zg2pro.utilities.spring.rest.template.Zg2proRestTemplate;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.junit.Assert.assertNotNull;
@@ -95,12 +98,12 @@ public class RestTemplateTest {
 
     @Test(expected = IllegalArgumentException.class)
     public void constructions2() {
-        assertNotNull(new LoggingRequestInterceptor(null, -4, Level.INFO));
+        assertNotNull(new LoggingRequestInterceptor(null, 1000, Level.INFO));
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void constructions3() {
-        assertNotNull(new LoggingRequestInterceptor(StandardCharsets.ISO_8859_1, -4, null));
+        assertNotNull(new LoggingRequestInterceptor(StandardCharsets.ISO_8859_1, 10000, null));
     }
 
     /**
@@ -128,8 +131,6 @@ public class RestTemplateTest {
         Zg2proRestTemplate z = new Zg2proRestTemplate();
         rt.getRestTemplate().setRequestFactory(z.getRequestFactory());
         ResponseEntity<String> resp;
-        resp = rt.getForEntity(MockedControllers.TEST_URL_GET_LONG_REPLY, String.class);
-        assertNotNull(resp);
         resp = rt.getForEntity(MockedControllers.TEST_URL_GET_BLANK_REPLY, String.class);
         assertNotNull(resp);
         for (Level l : Level.values()) {
@@ -138,8 +139,10 @@ public class RestTemplateTest {
             lInterceptors.add(new LoggingRequestInterceptor(StandardCharsets.UTF_8, 1000, l));
             Zg2proRestTemplate z2 = new Zg2proRestTemplate(z.getMessageConverters(), lInterceptors);
             rt.getRestTemplate().setRequestFactory(z2.getRequestFactory());
-            resp = rt.getForEntity(MockedControllers.TEST_URL_GET, String.class);
-            assertThat(resp.getBody()).isEqualTo(MockedControllers.TEST_RETURN_VALUE);
+            for (String str : new String[]{TEST_URL_GET_LONG_REPLY, TEST_URL_GET_BLANK_REPLY, TEST_URL_GET}) {
+                resp = rt.getForEntity(str, String.class);
+                assertThat(resp.getBody()).isNotNull();
+            }
         }
     }
 
