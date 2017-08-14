@@ -10,4 +10,5 @@ cache:
 install: true
 script: mvn install
 after_success:
+  - mvn cobertura:cobertura
   - bash <(curl -s https://codecov.io/bash)
