@@ -14,6 +14,7 @@ public class CamelToKebabTest {
     @Test
     public void testSomeValues() {
         CamelCaseToKebabCaseNamingStrategy cctkcns = new CamelCaseToKebabCaseNamingStrategy();
+        assertThat(cctkcns.translate(null)).isNullOrEmpty();
         assertThat(cctkcns.translate("k")).isEqualTo("k");
         //you sould not put 2 capitals together but if you do thats what you gonna have
         assertThat(cctkcns.translate("aTestForARandomKebab")).isEqualTo("a-test-for-arandom-kebab");

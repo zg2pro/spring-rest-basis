@@ -102,6 +102,9 @@ public class LoggingRequestInterceptor implements ClientHttpRequestInterceptor {
         if (maxBodyLength < 1) {
             throw new IllegalArgumentException("please set a limit to the body length writable in your logs");
         }
+        if (encoding == null || level == null) {
+            throw new IllegalArgumentException("please provide correct encoding and log level");
+        }
         this.encoding = encoding;
         this.maxBodyLength = maxBodyLength;
         this.lriLevel = level;

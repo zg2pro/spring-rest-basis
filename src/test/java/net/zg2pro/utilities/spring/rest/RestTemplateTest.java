@@ -4,8 +4,10 @@ import java.nio.charset.StandardCharsets;
 import net.zg2pro.utilities.spring.rest.interceptors.LoggingRequestInterceptor;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 import net.zg2pro.utilities.spring.rest.template.Zg2proRestTemplate;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
+import static org.junit.Assert.assertNotNull;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.junit.MockitoJUnitRunner;
@@ -32,11 +34,27 @@ class MockedControllers {
 
     public static final String TEST_RETURN_VALUE = "hello zg2pro!";
     public static final String TEST_URL_GET = "/testLogger";
+    public static final String TEST_URL_GET_BLANK_REPLY = "/testLoggerBlankReply";
+    public static final String TEST_URL_GET_LONG_REPLY = "/testLoggerLongReply";
 
     @RequestMapping(value = TEST_URL_GET, method = RequestMethod.GET)
     public @ResponseBody
     String testLogger() {
         return TEST_RETURN_VALUE;
+    }
+
+    @RequestMapping(value = TEST_URL_GET, method = RequestMethod.GET)
+    public @ResponseBody
+    String testLoggerBlank() {
+        return "";
+    }
+
+    @RequestMapping(value = TEST_URL_GET_LONG_REPLY, method = RequestMethod.GET)
+    public @ResponseBody
+    String testLoggerLonngReply() {
+        byte[] randomBytes = new byte[Integer.MAX_VALUE];
+        new Random().nextBytes(randomBytes);
+        return new String(randomBytes);
     }
 }
 
@@ -70,6 +88,21 @@ public class RestTemplateTest {
     @Autowired
     private TestRestTemplate rt;
 
+    @Test(expected = IllegalArgumentException.class)
+    public void constructions1() {
+        assertNotNull(new LoggingRequestInterceptor(StandardCharsets.UTF_8, -4, Level.INFO));
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void constructions2() {
+        assertNotNull(new LoggingRequestInterceptor(null, -4, Level.INFO));
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void constructions3() {
+        assertNotNull(new LoggingRequestInterceptor(StandardCharsets.ISO_8859_1, -4, null));
+    }
+
     /**
      * hard to check the logs provided by the interceptor when there's no error
      * however this unit test garantees the interceptor does not alter the reply
@@ -89,13 +122,18 @@ public class RestTemplateTest {
         ResponseEntity<String> resp = rt.getForEntity(MockedControllers.TEST_URL_GET, String.class);
         assertThat(resp.getBody()).isEqualTo(MockedControllers.TEST_RETURN_VALUE);
     }
-    
+
     @Test
-    public void testZg2Template(){
+    public void testZg2Template() {
         Zg2proRestTemplate z = new Zg2proRestTemplate();
         rt.getRestTemplate().setRequestFactory(z.getRequestFactory());
-        ResponseEntity<String> resp = rt.getForEntity(MockedControllers.TEST_URL_GET, String.class);
+        ResponseEntity<String> resp;
+        resp = rt.getForEntity(MockedControllers.TEST_URL_GET_LONG_REPLY, String.class);
+        assertNotNull(resp);
+        resp = rt.getForEntity(MockedControllers.TEST_URL_GET_BLANK_REPLY, String.class);
+        assertNotNull(resp);
+        resp = rt.getForEntity(MockedControllers.TEST_URL_GET, String.class);
         assertThat(resp.getBody()).isEqualTo(MockedControllers.TEST_RETURN_VALUE);
     }
-    
+
 }
