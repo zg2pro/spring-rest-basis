@@ -112,7 +112,7 @@ public class RestTemplateTest {
     public void testInterceptor() {
         List<ClientHttpRequestInterceptor> lInterceptors = new ArrayList<>();
         //spring boot default log level is info
-        lInterceptors.add(new LoggingRequestInterceptor(StandardCharsets.UTF_8, 1000, Level.INFO));
+        lInterceptors.add(new LoggingRequestInterceptor(StandardCharsets.ISO_8859_1, 100, Level.ERROR));
         SimpleClientHttpRequestFactory chrf = new SimpleClientHttpRequestFactory();
         chrf.setOutputStreaming(false);
         rt.getRestTemplate().setRequestFactory(new InterceptingClientHttpRequestFactory(
@@ -132,6 +132,11 @@ public class RestTemplateTest {
         assertNotNull(resp);
         resp = rt.getForEntity(MockedControllers.TEST_URL_GET_BLANK_REPLY, String.class);
         assertNotNull(resp);
+        List<ClientHttpRequestInterceptor> lInterceptors = new ArrayList<>();
+        //spring boot default log level is info
+        lInterceptors.add(new LoggingRequestInterceptor(StandardCharsets.UTF_8, 1000, Level.INFO));
+        Zg2proRestTemplate z2 = new Zg2proRestTemplate(z.getMessageConverters(), lInterceptors);
+        rt.getRestTemplate().setRequestFactory(z2.getRequestFactory());
         resp = rt.getForEntity(MockedControllers.TEST_URL_GET, String.class);
         assertThat(resp.getBody()).isEqualTo(MockedControllers.TEST_RETURN_VALUE);
     }
