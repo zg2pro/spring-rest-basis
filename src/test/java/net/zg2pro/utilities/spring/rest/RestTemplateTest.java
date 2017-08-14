@@ -43,7 +43,7 @@ class MockedControllers {
         return TEST_RETURN_VALUE;
     }
 
-    @RequestMapping(value = TEST_URL_GET, method = RequestMethod.GET)
+    @RequestMapping(value = TEST_URL_GET_BLANK_REPLY, method = RequestMethod.GET)
     public @ResponseBody
     String testLoggerBlank() {
         return "";
