@@ -85,7 +85,9 @@ class ApplicationBoot {
  * @author zg2pro
  */
 @RunWith(SpringRunner.class)
-@SpringBootTest(classes = {ApplicationBoot.class}, webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@SpringBootTest(
+        classes = {ApplicationBoot.class},
+        webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class RestTemplateTest {
 
     @Autowired
@@ -135,7 +137,6 @@ public class RestTemplateTest {
         assertNotNull(resp);
         for (Level l : Level.values()) {
             List<ClientHttpRequestInterceptor> lInterceptors = new ArrayList<>();
-            //spring boot default log level is info
             lInterceptors.add(new LoggingRequestInterceptor(StandardCharsets.UTF_8, 1000, l));
             Zg2proRestTemplate z2 = new Zg2proRestTemplate(z.getMessageConverters(), lInterceptors);
             rt.getRestTemplate().setRequestFactory(z2.getRequestFactory());

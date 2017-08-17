@@ -6,3 +6,20 @@
 utility configuration of spring's RestTemplate when implementing a Restful infrastructure, includes goodies for ssl, auto translation of variables from java to json, logging
 
 Consult the wiki for more information on how to use: https://github.com/zg2pro/spring-rest-basis/wiki
+
+# License
+
+This library is developed under MIT License, 
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+
+# continuous integration and deployment to central maven
+
+https://maven.apache.org/guides/mini/guide-central-repository-upload.html
+To improve the quality of the Central Maven repository, we require you to provide PGP signatures for all your artifacts (all files except checksums), and distribute your public key to a key server like http://pgp.mit.edu. Read Working with PGP Signatures for more information.
