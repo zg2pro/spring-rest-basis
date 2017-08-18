@@ -5,9 +5,10 @@
     <modelVersion>4.0.0</modelVersion>
 
 
-    <groupId>net.zg2pro.utilities</groupId>
+    <groupId>com.github.zg2pro</groupId>
     <artifactId>spring-rest-basis</artifactId>
     <name>spring-rest-basis</name>
+    <description>A library of tools that come handy when doing spring-rest development</description>
     <packaging>jar</packaging>
     <version>0.1-SNAPSHOT</version>
     
