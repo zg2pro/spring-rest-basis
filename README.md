@@ -25,5 +25,8 @@ https://maven.apache.org/guides/mini/guide-central-repository-upload.html
 To improve the quality of the Central Maven repository, we require you to provide PGP signatures for all your artifacts (all files except checksums), and distribute your public key to a key server like http://pgp.mit.edu. Read Working with PGP Signatures for more information.
 
 my ossrh ticket: https://issues.sonatype.org/browse/OSSRH-33939
+instructions: http://central.sonatype.org/pages/producers.html
+http://central.sonatype.org/pages/working-with-pgp-signatures.html
+http://central.sonatype.org/pages/apache-maven.html
 
-first release soon, start using the snaphot: https://oss.sonatype.org/content/repositories/snapshots/com/github/zg2pro/spring-rest-basis/
+first release soon, start using the snapshot: https://oss.sonatype.org/content/repositories/snapshots/com/github/zg2pro/spring-rest-basis/
