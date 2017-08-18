@@ -96,15 +96,6 @@
         </pluginRepository>
     </pluginRepositories>
     
-    <!--
-com.github.zg2pro has been prepared, now user(s) zg2pro can:
-Deploy snapshot artifacts into repository https://oss.sonatype.org/content/repositories/snapshots
-Deploy release artifacts into the staging repository https://oss.sonatype.org/service/local/staging/deploy/maven2
-Promote staged artifacts into repository 'Releases'
-Download snapshot and release artifacts from group https://oss.sonatype.org/content/groups/public
-Download snapshot, release and staged artifacts from staging group https://oss.sonatype.org/content/groups/staging   
-    -->
-    
     <distributionManagement>
         <snapshotRepository>
             <id>ossrh</id>
@@ -197,21 +188,9 @@ Download snapshot, release and staged artifacts from staging group https://oss.s
                             <serverId>ossrh</serverId>
                             <nexusUrl>https://oss.sonatype.org/</nexusUrl>
                             <autoReleaseAfterClose>false</autoReleaseAfterClose>
+                            <autoDropAfterRelease>true</autoDropAfterRelease>
                         </configuration>
                     </plugin>
-                    <!--
-                    If your version is a release version (does not end in -SNAPSHOT) and with this setup in place, you can run a deployment to OSSRH and an automated release to the Central Repository with the usual:
-                    mvn clean deploy
-                    With the property autoReleaseAfterClose set to false you can manually inspect the staging repository in the Nexus Repository Manager and trigger a release of the staging repository later with
-                    mvn nexus-staging:release
-                    If you find something went wrong you can drop the staging repository with
-                    mvn nexus-staging:drop
-
-                    Snapshot deployment are performed when your version ends in -SNAPSHOT . You do not need to fulfill the requirements when performing snapshot deployments and can simply run
-                    mvn clean deploy
-
-                    http://central.sonatype.org/pages/apache-maven.html
-                    -->
                 </plugins>
             </build>
         </profile>

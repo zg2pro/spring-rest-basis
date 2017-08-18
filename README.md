@@ -3,7 +3,8 @@
 [![codecov](https://codecov.io/gh/zg2pro/spring-rest-basis/branch/master/graph/badge.svg)](https://codecov.io/gh/zg2pro/spring-rest-basis/branch/master)
 
 # spring-rest-basis
-utility configuration of spring's RestTemplate when implementing a Restful infrastructure, includes goodies for ssl, auto translation of variables from java to json, logging
+utility configuration of spring's RestTemplate when implementing a Restful infrastructure, includes goodies for ssl, 
+auto-translation of variables from java to json, logging
 
 Consult the wiki for more information on how to use: https://github.com/zg2pro/spring-rest-basis/wiki
 
@@ -21,12 +22,5 @@ SOFTWARE.
 
 # continuous integration and deployment to central maven
 
-https://maven.apache.org/guides/mini/guide-central-repository-upload.html
-To improve the quality of the Central Maven repository, we require you to provide PGP signatures for all your artifacts (all files except checksums), and distribute your public key to a key server like http://pgp.mit.edu. Read Working with PGP Signatures for more information.
-
-my ossrh ticket: https://issues.sonatype.org/browse/OSSRH-33939
-instructions: http://central.sonatype.org/pages/producers.html
-http://central.sonatype.org/pages/working-with-pgp-signatures.html
-http://central.sonatype.org/pages/apache-maven.html
-
-first release soon, start using the snapshot: https://oss.sonatype.org/content/repositories/snapshots/com/github/zg2pro/spring-rest-basis/
+build and tests performed by travis CI
+I will git tag major improvements and push them to oss.sonatype/maven2 at the same time.
