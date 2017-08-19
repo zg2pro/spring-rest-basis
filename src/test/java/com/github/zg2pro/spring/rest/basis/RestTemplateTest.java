@@ -1,14 +1,14 @@
-package net.zg2pro.utilities.spring.rest;
+package com.github.zg2pro.spring.rest.basis;
 
 import java.nio.charset.StandardCharsets;
-import net.zg2pro.utilities.spring.rest.interceptors.LoggingRequestInterceptor;
+import com.github.zg2pro.spring.rest.basis.interceptors.LoggingRequestInterceptor;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
-import static net.zg2pro.utilities.spring.rest.MockedControllers.TEST_URL_GET;
-import static net.zg2pro.utilities.spring.rest.MockedControllers.TEST_URL_GET_BLANK_REPLY;
-import static net.zg2pro.utilities.spring.rest.MockedControllers.TEST_URL_GET_LONG_REPLY;
-import net.zg2pro.utilities.spring.rest.template.Zg2proRestTemplate;
+import static com.github.zg2pro.spring.rest.basis.MockedControllers.TEST_URL_GET;
+import static com.github.zg2pro.spring.rest.basis.MockedControllers.TEST_URL_GET_BLANK_REPLY;
+import static com.github.zg2pro.spring.rest.basis.MockedControllers.TEST_URL_GET_LONG_REPLY;
+import com.github.zg2pro.spring.rest.basis.template.Zg2proRestTemplate;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.junit.Assert.assertNotNull;
 import org.junit.Test;

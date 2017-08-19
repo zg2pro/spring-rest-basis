@@ -1,10 +1,10 @@
-package net.zg2pro.utilities.spring.rest.template;
+package com.github.zg2pro.spring.rest.basis.template;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.util.ArrayList;
 import java.util.List;
-import net.zg2pro.utilities.spring.rest.interceptors.LoggingRequestInterceptor;
-import net.zg2pro.utilities.spring.rest.strategy.CamelCaseToKebabCaseNamingStrategy;
+import com.github.zg2pro.spring.rest.basis.interceptors.LoggingRequestInterceptor;
+import com.github.zg2pro.spring.rest.basis.strategy.CamelCaseToKebabCaseNamingStrategy;
 import org.springframework.http.client.BufferingClientHttpRequestFactory;
 import org.springframework.http.client.ClientHttpRequestInterceptor;
 import org.springframework.http.client.InterceptingClientHttpRequestFactory;

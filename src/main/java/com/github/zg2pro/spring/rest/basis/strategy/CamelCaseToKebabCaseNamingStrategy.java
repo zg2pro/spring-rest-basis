@@ -1,4 +1,4 @@
-package net.zg2pro.utilities.spring.rest.strategy;
+package com.github.zg2pro.spring.rest.basis.strategy;
 
 import com.fasterxml.jackson.databind.PropertyNamingStrategy;
 
