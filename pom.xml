@@ -10,7 +10,8 @@
     <name>spring-rest-basis</name>
     <description>A library of tools that come handy when doing spring-rest development</description>
     <packaging>jar</packaging>
-    <version>0.1-SNAPSHOT</version>
+    <version>0.1</version>
+    <url>https://github.com/zg2pro/spring-rest-basis</url>
     
     <properties>
         <java.version>8</java.version>
