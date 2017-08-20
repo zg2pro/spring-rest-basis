@@ -1,6 +1,30 @@
+/*
+ * The MIT License
+ *
+ * Copyright 2017 zg2pro.
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ * THE SOFTWARE.
+ */
 package com.github.zg2pro.spring.rest.basis.template;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.github.zg2pro.spring.rest.basis.exceptions.RestTemplateErrorHandler;
 import java.util.ArrayList;
 import java.util.List;
 import com.github.zg2pro.spring.rest.basis.interceptors.LoggingRequestInterceptor;
@@ -17,11 +41,10 @@ import org.springframework.web.client.RestTemplate;
 /**
  *
  * Layer over spring's RestTemplate loading automatically the lib utilities
- * 
+ *
  * @author zg2pro
  */
 public class Zg2proRestTemplate extends RestTemplate {
-
 
     private void interceptorsIntegration(List<ClientHttpRequestInterceptor> lInterceptors) {
         SimpleClientHttpRequestFactory chrf = new SimpleClientHttpRequestFactory();
@@ -33,15 +56,16 @@ public class Zg2proRestTemplate extends RestTemplate {
                 )
         );
     }
-    
-    public static ObjectMapper camelToKebabObjectMapper() {
+
+    private ObjectMapper camelToKebabObjectMapper() {
         ObjectMapper jsonMapper = new ObjectMapper();
         jsonMapper.setPropertyNamingStrategy(new CamelCaseToKebabCaseNamingStrategy());
         return jsonMapper;
     }
-    
+
     /**
-     * a RestTemplate including logging interceptor
+     * a RestTemplate including logging interceptor The constructor also
+     * initializes the RestTemplateErrorHandler.
      */
     public Zg2proRestTemplate() {
         super();
@@ -55,17 +79,22 @@ public class Zg2proRestTemplate extends RestTemplate {
         List<ClientHttpRequestInterceptor> lInterceptors = new ArrayList<>();
         lInterceptors.add(new LoggingRequestInterceptor());
         interceptorsIntegration(lInterceptors);
+        setErrorHandler(new RestTemplateErrorHandler());
     }
 
     /**
-     * a RestTemplate including your arguments for message converters and interceptors
-     * 
-     * @param lConverters - among which could jackson customized with the CamelCaseToKebabCase policy
+     * a RestTemplate including your arguments for message converters and
+     * interceptors. The constructor also initializes the
+     * RestTemplateErrorHandler.
+     *
+     * @param lConverters - among which could jackson customized with the
+     * CamelCaseToKebabCase policy
      * @param lInterceptors - among which could be LoggingRequestInterceptor
      */
     public Zg2proRestTemplate(List<HttpMessageConverter<?>> lConverters,
             List<ClientHttpRequestInterceptor> lInterceptors) {
         super();
+        setErrorHandler(new RestTemplateErrorHandler());
         if (!CollectionUtils.isEmpty(lConverters)) {
             //emptiness is rechecked inside setMessageConverters but it may change 
             //in a future spring release
