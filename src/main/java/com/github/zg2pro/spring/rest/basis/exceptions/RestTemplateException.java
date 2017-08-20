@@ -34,13 +34,6 @@ public class RestTemplateException extends RuntimeException {
     private static final long serialVersionUID = -8401400592804985312L;
 
     /**
-     * default constructor
-     */
-    public RestTemplateException() {
-        super();
-    }
-
-    /**
      * constructor from error message and "caused by"-element error resource
      *
      * @param message
@@ -48,26 +41,6 @@ public class RestTemplateException extends RuntimeException {
      */
     public RestTemplateException(String message, ErrorResource er) {
         super(message, new StackTracedException(er));
-    }
-
-    /**
-     * constructor from "caused by"-element error resource
-     *
-     * @param er
-     */
-    public RestTemplateException(ErrorResource er) {
-        super(er.getErrorClassName() + " error raised by rest client: " + er.getErrorMessage());
-        super.setStackTrace(StackTracedException.mapper(er.getStackTrace()));
-    }
-
-    /**
-     * constructor from error message and "caused by"-element throwable
-     *
-     * @param message
-     * @param cause
-     */
-    public RestTemplateException(String message, Throwable cause) {
-        super(message, cause);
     }
 
 }
