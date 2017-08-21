@@ -6,7 +6,7 @@
 utility configuration of spring's RestTemplate when implementing a Restful infrastructure, includes goodies for ssl, 
 auto-translation of variables from java to json, logging, exceptions serialization
 
-'''![Consult the wiki](https://github.com/zg2pro/spring-rest-basis/wiki)''' for more information on how to use
+:book: __![Consult the wiki](https://github.com/zg2pro/spring-rest-basis/wiki)__ for more information on how to use
 
 # License
 
