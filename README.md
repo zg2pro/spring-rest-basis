@@ -23,4 +23,5 @@ SOFTWARE.
 # continuous integration and deployment to central maven
 
 build and tests performed by travis CI
+
 I will git tag major improvements and push them to oss.sonatype/maven2 at the same time.
