@@ -21,7 +21,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package com.github.zg2pro.spring.rest.basis.strategy;
+package com.github.zg2pro.spring.rest.basis.serialization;
 
 import com.fasterxml.jackson.databind.PropertyNamingStrategy;
 

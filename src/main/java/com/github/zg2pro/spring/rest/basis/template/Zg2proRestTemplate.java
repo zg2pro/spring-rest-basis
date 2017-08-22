@@ -25,10 +25,10 @@ package com.github.zg2pro.spring.rest.basis.template;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.zg2pro.spring.rest.basis.exceptions.RestTemplateErrorHandler;
+import com.github.zg2pro.spring.rest.basis.logs.LoggingRequestFactoryFactory;
 import java.util.ArrayList;
 import java.util.List;
-import com.github.zg2pro.spring.rest.basis.interceptors.LoggingRequestInterceptor;
-import com.github.zg2pro.spring.rest.basis.strategy.CamelCaseToKebabCaseNamingStrategy;
+import com.github.zg2pro.spring.rest.basis.serialization.CamelCaseToKebabCaseNamingStrategy;
 import org.springframework.http.client.BufferingClientHttpRequestFactory;
 import org.springframework.http.client.ClientHttpRequestInterceptor;
 import org.springframework.http.client.InterceptingClientHttpRequestFactory;
@@ -46,17 +46,6 @@ import org.springframework.web.client.RestTemplate;
  * @author zg2pro
  */
 public class Zg2proRestTemplate extends RestTemplate {
-
-    private void interceptorsIntegration(List<ClientHttpRequestInterceptor> lInterceptors) {
-        SimpleClientHttpRequestFactory chrf = new SimpleClientHttpRequestFactory();
-        chrf.setOutputStreaming(false);
-        this.setRequestFactory(
-                new InterceptingClientHttpRequestFactory(
-                        new BufferingClientHttpRequestFactory(chrf),
-                        lInterceptors
-                )
-        );
-    }
 
     private ObjectMapper camelToKebabObjectMapper() {
         ObjectMapper jsonMapper = new ObjectMapper();
@@ -77,10 +66,20 @@ public class Zg2proRestTemplate extends RestTemplate {
         messageConverters.add(0, jackson2Http);
         setMessageConverters(messageConverters);
         //interceptors
-        List<ClientHttpRequestInterceptor> lInterceptors = new ArrayList<>();
-        lInterceptors.add(new LoggingRequestInterceptor());
-        interceptorsIntegration(lInterceptors);
+        this.setRequestFactory(LoggingRequestFactoryFactory.build());
+        //errors handling
         setErrorHandler(new RestTemplateErrorHandler());
+    }
+
+    private void interceptorsIntegration(List<ClientHttpRequestInterceptor> lInterceptors) {
+        SimpleClientHttpRequestFactory chrf = new SimpleClientHttpRequestFactory();
+        chrf.setOutputStreaming(false);
+        this.setRequestFactory(
+                new InterceptingClientHttpRequestFactory(
+                        new BufferingClientHttpRequestFactory(chrf),
+                        lInterceptors
+                )
+        );
     }
 
     /**

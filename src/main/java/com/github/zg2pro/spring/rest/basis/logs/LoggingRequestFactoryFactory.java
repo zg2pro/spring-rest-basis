@@ -21,12 +21,15 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package com.github.zg2pro.spring.rest.basis.interceptors;
+package com.github.zg2pro.spring.rest.basis.logs;
 
+import java.nio.charset.Charset;
+import java.util.ArrayList;
 import java.util.List;
-import org.springframework.http.client.ClientHttpRequestFactory;
+import org.slf4j.event.Level;
+import org.springframework.http.client.BufferingClientHttpRequestFactory;
 import org.springframework.http.client.ClientHttpRequestInterceptor;
-import org.springframework.http.client.InterceptingClientHttpRequestFactory;
+import org.springframework.http.client.SimpleClientHttpRequestFactory;
 
 /**
  *
@@ -37,10 +40,30 @@ import org.springframework.http.client.InterceptingClientHttpRequestFactory;
  * @author zg2pro
  * @since 0.2
  */
-public class LoggingRequestFactory extends InterceptingClientHttpRequestFactory {
+public class LoggingRequestFactoryFactory {
 
-    protected LoggingRequestFactory(ClientHttpRequestFactory requestFactory, List<ClientHttpRequestInterceptor> interceptors) {
-        super(requestFactory, interceptors);
+    public static LoggingRequestFactory build() {
+        LoggingRequestInterceptor lri = new LoggingRequestInterceptor();
+        return interceptorToRequestFactory(lri);
     }
 
+    public static LoggingRequestFactory build(Charset encoding, int maxBodyLength, Level level) {
+        LoggingRequestInterceptor lri = new LoggingRequestInterceptor(encoding, maxBodyLength, level);
+        return interceptorToRequestFactory(lri);
+    }
+
+    public static LoggingRequestFactory build(LoggingRequestInterceptor lri) {
+        return interceptorToRequestFactory(lri);
+    }
+
+    private static LoggingRequestFactory interceptorToRequestFactory(LoggingRequestInterceptor lri) {
+        List<ClientHttpRequestInterceptor> lInterceptors = new ArrayList<>();
+        lInterceptors.add(lri);
+        SimpleClientHttpRequestFactory chrf = new SimpleClientHttpRequestFactory();
+        chrf.setOutputStreaming(false);
+        return new LoggingRequestFactory(
+                new BufferingClientHttpRequestFactory(chrf),
+                lInterceptors
+        );
+    }
 }

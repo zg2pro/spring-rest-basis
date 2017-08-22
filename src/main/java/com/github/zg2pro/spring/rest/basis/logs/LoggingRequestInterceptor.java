@@ -21,7 +21,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package com.github.zg2pro.spring.rest.basis.interceptors;
+package com.github.zg2pro.spring.rest.basis.logs;
 
 import java.io.BufferedReader;
 import java.io.IOException;

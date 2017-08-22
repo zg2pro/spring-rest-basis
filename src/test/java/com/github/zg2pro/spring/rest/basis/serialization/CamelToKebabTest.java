@@ -1,5 +1,6 @@
-package com.github.zg2pro.spring.rest.basis.strategy;
+package com.github.zg2pro.spring.rest.basis.serialization;
 
+import com.github.zg2pro.spring.rest.basis.serialization.CamelCaseToKebabCaseNamingStrategy;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import org.junit.Test;
 
