@@ -27,7 +27,6 @@ import org.springframework.http.client.BufferingClientHttpRequestFactory;
 import org.springframework.http.client.ClientHttpRequestInterceptor;
 import org.springframework.http.client.InterceptingClientHttpRequestFactory;
 import org.springframework.http.client.SimpleClientHttpRequestFactory;
-import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.test.context.junit4.SpringRunner;
 
 /**
@@ -99,7 +98,6 @@ public class RestTemplateTest {
 
     @Test
     public void testsWithLogLevels() {
-        List<HttpMessageConverter<?>> z = new Zg2proRestTemplate().getMessageConverters();
         ResponseEntity<String> resp;
         for (Level l : Level.values()) {
             rt.getRestTemplate().setRequestFactory(
@@ -114,7 +112,10 @@ public class RestTemplateTest {
 
     @Test
     public void testZg2Template() {
-        Zg2proRestTemplate z = new Zg2proRestTemplate();
+        Zg2proRestTemplate z0 = new Zg2proRestTemplate();
+        assertThat(z0.getErrorHandler()).isInstanceOf(RestTemplateErrorHandler.class);
+        Zg2proRestTemplate z = new Zg2proRestTemplate(z0.getMessageConverters(), z0.getInterceptors());
+        z.setRequestFactory(LoggingRequestFactoryFactory.build((LoggingRequestInterceptor) z0.getInterceptors().get(0)));
         assertThat(z.getErrorHandler()).isInstanceOf(RestTemplateErrorHandler.class);
         rt.getRestTemplate().setRequestFactory(z.getRequestFactory());
         ResponseEntity<String> resp;
