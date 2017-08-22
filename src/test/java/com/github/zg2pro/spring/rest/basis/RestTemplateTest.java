@@ -14,6 +14,7 @@ import com.github.zg2pro.spring.rest.basis.exceptions.RestTemplateErrorHandler;
 import com.github.zg2pro.spring.rest.basis.exceptions.RestTemplateException;
 import com.github.zg2pro.spring.rest.basis.exceptions.StackTracedException;
 import com.github.zg2pro.spring.rest.basis.exceptions.Zg2proRestServerExceptionsHandler;
+import com.github.zg2pro.spring.rest.basis.interceptors.LoggingRequestFactoryFactory;
 import com.github.zg2pro.spring.rest.basis.template.Zg2proRestTemplate;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.assertj.core.api.AssertionsForClassTypes.fail;
@@ -205,10 +206,7 @@ public class RestTemplateTest {
         List<HttpMessageConverter<?>> z = new Zg2proRestTemplate().getMessageConverters();
         ResponseEntity<String> resp;
         for (Level l : Level.values()) {
-            List<ClientHttpRequestInterceptor> lInterceptors = new ArrayList<>();
-            lInterceptors.add(new LoggingRequestInterceptor(StandardCharsets.UTF_8, 1000, l));
-            Zg2proRestTemplate z2 = new Zg2proRestTemplate(z, lInterceptors);
-            rt.getRestTemplate().setRequestFactory(z2.getRequestFactory());
+            rt.getRestTemplate().setRequestFactory(LoggingRequestFactoryFactory.build(StandardCharsets.UTF_8, 1000, l));
             for (String str : new String[]{TEST_URL_GET_LONG_REPLY, TEST_URL_GET}) {
                 resp = rt.getForEntity(str, String.class);
                 assertThat(resp.getBody()).isNotNull();
@@ -223,7 +221,7 @@ public class RestTemplateTest {
             rt.getForObject(MockedControllers.TEST_URL_ERROR_REPLY, ReturnedStructure.class);
             fail("we should not get to this point");
         } catch (RestTemplateException rte) {
-            StackTracedException ste = (StackTracedException)rte.getCause();
+            StackTracedException ste = (StackTracedException) rte.getCause();
             assertThat(ste.getCause()).isInstanceOf(NullPointerException.class);
             assertThat(ste.getMessage()).contains(EXCEPTION_MESSAGE);
         } catch (RestClientException e) {

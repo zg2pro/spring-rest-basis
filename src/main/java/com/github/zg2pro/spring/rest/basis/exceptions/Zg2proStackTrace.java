@@ -32,6 +32,7 @@ import java.util.Collection;
  * between rest server and rest client
  *
  * @author zg2pro
+ * @since 0.2
  */
 public class Zg2proStackTrace extends ArrayList<Zg2proStackTraceElement> {
 

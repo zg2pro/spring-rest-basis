@@ -29,6 +29,7 @@ import java.io.Serializable;
  * serialized representation of a java exception
  *
  * @author zg2pro
+ * @since 0.2
  */
 public class ErrorResource implements Serializable {
 

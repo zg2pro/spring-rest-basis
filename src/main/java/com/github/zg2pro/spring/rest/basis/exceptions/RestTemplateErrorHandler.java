@@ -33,6 +33,7 @@ import org.springframework.web.client.ResponseErrorHandler;
 
 /**
  * @author zg2pro
+ * @since 0.2
  *
  * transforms the errors triggered on server side so they can be serialized and
  * thrown up to the client side

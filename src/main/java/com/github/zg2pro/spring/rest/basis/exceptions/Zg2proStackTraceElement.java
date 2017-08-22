@@ -30,6 +30,7 @@ import java.io.Serializable;
  * This class represents a line in the stack of errors, in order to have it serialized and deserialized
  * 
  * @author zg2pro
+ * @since 0.2
  */
 public class Zg2proStackTraceElement implements Serializable {
 

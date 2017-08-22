@@ -31,7 +31,6 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
@@ -43,6 +42,7 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
  * toward rest clients
  *
  * @author zg2pro
+ * @since 0.2
  */
 public class Zg2proRestServerExceptionsHandler extends ResponseEntityExceptionHandler {
 

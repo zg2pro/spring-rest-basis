@@ -21,27 +21,26 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package com.github.zg2pro.spring.rest.basis.exceptions;
+package com.github.zg2pro.spring.rest.basis.interceptors;
+
+import java.util.List;
+import org.springframework.http.client.ClientHttpRequestFactory;
+import org.springframework.http.client.ClientHttpRequestInterceptor;
+import org.springframework.http.client.InterceptingClientHttpRequestFactory;
 
 /**
- * Manages errors triggered when querying the business application, when
- * serializing, or when deserializing
+ *
+ * This intercepting request factory integrates LoggingRequestInterceptor so all
+ * rest requests and responses will be logged (as long as you set your log
+ * levels correctly)
  *
  * @author zg2pro
  * @since 0.2
  */
-public class RestTemplateException extends RuntimeException {
+public class LoggingRequestFactory extends InterceptingClientHttpRequestFactory {
 
-    private static final long serialVersionUID = -8401400592804985312L;
-
-    /**
-     * constructor from error message and "caused by"-element error resource
-     *
-     * @param message
-     * @param er
-     */
-    public RestTemplateException(String message, ErrorResource er) {
-        super(message, new StackTracedException(er));
+    protected LoggingRequestFactory(ClientHttpRequestFactory requestFactory, List<ClientHttpRequestInterceptor> interceptors) {
+        super(requestFactory, interceptors);
     }
 
 }

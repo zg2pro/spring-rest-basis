@@ -32,6 +32,7 @@ import org.slf4j.LoggerFactory;
  * error resource exception generator
  *
  * @author zg2pro
+ * @since 0.2
  */
 public class StackTracedException extends Exception {
 
