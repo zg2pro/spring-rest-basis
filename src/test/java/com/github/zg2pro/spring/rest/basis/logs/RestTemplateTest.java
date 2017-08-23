@@ -27,6 +27,7 @@ import org.springframework.http.client.BufferingClientHttpRequestFactory;
 import org.springframework.http.client.ClientHttpRequestInterceptor;
 import org.springframework.http.client.InterceptingClientHttpRequestFactory;
 import org.springframework.http.client.SimpleClientHttpRequestFactory;
+import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.test.context.junit4.SpringRunner;
 
 /**
@@ -117,7 +118,11 @@ public class RestTemplateTest {
         assertThat(z0.getInterceptors().size()).isGreaterThan(0);
         List<ClientHttpRequestInterceptor> lInterceptors = new ArrayList<>();
         lInterceptors.add(new LoggingRequestInterceptor());
-        Zg2proRestTemplate z = new Zg2proRestTemplate(z0.getMessageConverters(), lInterceptors);
+        List<HttpMessageConverter<?>> covs = z0.getMessageConverters();
+        z0 = new Zg2proRestTemplate(null, lInterceptors);
+        assertThat(z0).isNotNull();
+        Zg2proRestTemplate z = new Zg2proRestTemplate(covs, null);
+        z.setInterceptors(lInterceptors);
         assertThat(z.getInterceptors().size()).isGreaterThan(0);
         z.setRequestFactory(LoggingRequestFactoryFactory.build());
         assertThat(z.getInterceptors().size()).isGreaterThan(0);

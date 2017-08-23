@@ -47,7 +47,7 @@ import org.springframework.web.client.RestTemplate;
  * @author zg2pro
  */
 public class Zg2proRestTemplate extends RestTemplate {
-    
+
     private ObjectMapper camelToKebabObjectMapper() {
         ObjectMapper jsonMapper = new ObjectMapper();
         jsonMapper.setPropertyNamingStrategy(new CamelCaseToKebabCaseNamingStrategy());
@@ -68,6 +68,7 @@ public class Zg2proRestTemplate extends RestTemplate {
         setMessageConverters(messageConverters);
         //interceptors
         LoggingRequestInterceptor lri = new LoggingRequestInterceptor();
+        setInterceptors(new ArrayList<>());
         getInterceptors().add(lri);
         this.setRequestFactory(LoggingRequestFactoryFactory.build(lri));
         //errors handling
@@ -104,13 +105,14 @@ public class Zg2proRestTemplate extends RestTemplate {
             //in a future spring release
             setMessageConverters(lConverters);
         }
-        if (!CollectionUtils.isEmpty(lInterceptors)) {
-            interceptorsIntegration(lInterceptors);
+        if (lInterceptors == null) {
+            lInterceptors = new ArrayList<>();
         }
+        interceptorsIntegration(lInterceptors);
     }
 
-    List<ClientHttpRequestInterceptor> lInterceptors = new ArrayList<>();
-    
+    List<ClientHttpRequestInterceptor> lInterceptors;
+
     @Override
     public List<ClientHttpRequestInterceptor> getInterceptors() {
         return lInterceptors;
@@ -120,7 +122,5 @@ public class Zg2proRestTemplate extends RestTemplate {
     public void setInterceptors(List<ClientHttpRequestInterceptor> interceptors) {
         this.lInterceptors = interceptors;
     }
-    
-    
-    
+
 }
