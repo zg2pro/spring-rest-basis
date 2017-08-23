@@ -26,6 +26,7 @@ package com.github.zg2pro.spring.rest.basis.template;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.zg2pro.spring.rest.basis.exceptions.RestTemplateErrorHandler;
 import com.github.zg2pro.spring.rest.basis.logs.LoggingRequestFactoryFactory;
+import com.github.zg2pro.spring.rest.basis.logs.LoggingRequestInterceptor;
 import java.util.ArrayList;
 import java.util.List;
 import com.github.zg2pro.spring.rest.basis.serialization.CamelCaseToKebabCaseNamingStrategy;
@@ -46,7 +47,7 @@ import org.springframework.web.client.RestTemplate;
  * @author zg2pro
  */
 public class Zg2proRestTemplate extends RestTemplate {
-
+    
     private ObjectMapper camelToKebabObjectMapper() {
         ObjectMapper jsonMapper = new ObjectMapper();
         jsonMapper.setPropertyNamingStrategy(new CamelCaseToKebabCaseNamingStrategy());
@@ -66,12 +67,15 @@ public class Zg2proRestTemplate extends RestTemplate {
         messageConverters.add(0, jackson2Http);
         setMessageConverters(messageConverters);
         //interceptors
-        this.setRequestFactory(LoggingRequestFactoryFactory.build());
+        LoggingRequestInterceptor lri = new LoggingRequestInterceptor();
+        getInterceptors().add(lri);
+        this.setRequestFactory(LoggingRequestFactoryFactory.build(lri));
         //errors handling
         setErrorHandler(new RestTemplateErrorHandler());
     }
 
     private void interceptorsIntegration(List<ClientHttpRequestInterceptor> lInterceptors) {
+        setInterceptors(lInterceptors);
         SimpleClientHttpRequestFactory chrf = new SimpleClientHttpRequestFactory();
         chrf.setOutputStreaming(false);
         this.setRequestFactory(
@@ -104,4 +108,19 @@ public class Zg2proRestTemplate extends RestTemplate {
             interceptorsIntegration(lInterceptors);
         }
     }
+
+    List<ClientHttpRequestInterceptor> lInterceptors = new ArrayList<>();
+    
+    @Override
+    public List<ClientHttpRequestInterceptor> getInterceptors() {
+        return lInterceptors;
+    }
+
+    @Override
+    public void setInterceptors(List<ClientHttpRequestInterceptor> interceptors) {
+        this.lInterceptors = interceptors;
+    }
+    
+    
+    
 }

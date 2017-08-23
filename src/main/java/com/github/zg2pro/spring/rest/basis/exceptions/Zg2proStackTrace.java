@@ -24,7 +24,6 @@
 package com.github.zg2pro.spring.rest.basis.exceptions;
 
 import java.util.ArrayList;
-import java.util.Collection;
 
 /**
  *
@@ -43,15 +42,6 @@ public class Zg2proStackTrace extends ArrayList<Zg2proStackTraceElement> {
      */
     public Zg2proStackTrace() {
         super();
-    }
-
-    /**
-     * serialized exception constructor with copy by pointers
-     *
-     * @param c
-     */
-    public Zg2proStackTrace(Collection<? extends Zg2proStackTraceElement> c) {
-        super(c);
     }
 
 }
