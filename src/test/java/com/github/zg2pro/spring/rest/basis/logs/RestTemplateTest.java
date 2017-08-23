@@ -114,8 +114,10 @@ public class RestTemplateTest {
     public void testZg2Template() {
         Zg2proRestTemplate z0 = new Zg2proRestTemplate();
         assertThat(z0.getErrorHandler()).isInstanceOf(RestTemplateErrorHandler.class);
-        Zg2proRestTemplate z = new Zg2proRestTemplate(z0.getMessageConverters(), z0.getInterceptors());
-        z.setRequestFactory(LoggingRequestFactoryFactory.build((LoggingRequestInterceptor) z0.getInterceptors().get(0)));
+        List<ClientHttpRequestInterceptor> lInterceptors = new ArrayList<>();
+        lInterceptors.add(new LoggingRequestInterceptor());
+        Zg2proRestTemplate z = new Zg2proRestTemplate(z0.getMessageConverters(), lInterceptors);
+        z.setRequestFactory(LoggingRequestFactoryFactory.build((LoggingRequestInterceptor) lInterceptors.get(0)));
         assertThat(z.getErrorHandler()).isInstanceOf(RestTemplateErrorHandler.class);
         rt.getRestTemplate().setRequestFactory(z.getRequestFactory());
         ResponseEntity<String> resp;
