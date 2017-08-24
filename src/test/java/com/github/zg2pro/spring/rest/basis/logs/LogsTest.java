@@ -1,13 +1,13 @@
 package com.github.zg2pro.spring.rest.basis.logs;
 
 import com.github.zg2pro.spring.rest.basis.MockedControllers;
-import com.github.zg2pro.spring.rest.basis.ReturnedStructure;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 import static com.github.zg2pro.spring.rest.basis.MockedControllers.TEST_URL_GET;
 import static com.github.zg2pro.spring.rest.basis.MockedControllers.TEST_URL_GET_LONG_REPLY;
 import static com.github.zg2pro.spring.rest.basis.MockedControllers.TEST_URL_GET_STRUCTURE;
+import com.github.zg2pro.spring.rest.basis.ReturnedStructure;
 import com.github.zg2pro.spring.rest.basis.exceptions.RestTemplateErrorHandler;
 import com.github.zg2pro.spring.rest.basis.template.Zg2proRestTemplate;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
@@ -57,7 +57,7 @@ class ApplicationBoot {
 @SpringBootTest(
         classes = {ApplicationBoot.class},
         webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-public class RestTemplateTest {
+public class LogsTest {
 
     @Autowired
     private TestRestTemplate rt;

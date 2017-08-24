@@ -1,6 +1,10 @@
 package com.github.zg2pro.spring.rest.basis;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.Random;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -19,6 +23,8 @@ public class MockedControllers {
     public static final String TEST_URL_GET_LONG_REPLY = "/testLoggerLongReply";
     public static final String TEST_URL_GET_STRUCTURE = "/testStructure";
     public static final String TEST_URL_ERROR_REPLY = "/errorReply";
+    public static final String TEST_URL_FILE_UPLOAD = "/upload";
+    public static final String TEST_URL_FILE_DOWNLOAD = "/download";
 
     public static final String EXCEPTION_MESSAGE = "testing an execption serialization";
 
@@ -56,5 +62,23 @@ public class MockedControllers {
     public @ResponseBody
     ReturnedStructure testError() {
         throw new NullPointerException(EXCEPTION_MESSAGE);
+    }
+
+    private Path p;
+    
+    @RequestMapping(value = TEST_URL_FILE_UPLOAD, method = RequestMethod.POST)
+    public @ResponseBody
+    String testUpload(@RequestBody byte[] body) throws IOException {
+        p = Files.createTempFile("test-file", ".tmp");
+        Files.write(p, body);
+        return "ok";
+    }
+
+    @RequestMapping(value = TEST_URL_FILE_DOWNLOAD, method = RequestMethod.GET)
+    public @ResponseBody
+    byte[] testDownload() throws IOException {
+        byte[] inMemory = Files.readAllBytes(p);
+        Files.delete(p);
+        return inMemory;
     }
 }

@@ -173,7 +173,7 @@ public class LoggingRequestInterceptor implements ClientHttpRequestInterceptor {
                 }
             }
         } catch (IOException ioe) {
-            log("============ClientHttpResponse body null====================" + ioe);
+            log("============ClientHttpResponse body null====================", ioe);
         } finally {
             if (is != null) {
                 is.close();
