@@ -34,7 +34,6 @@ import java.util.List;
 import com.github.zg2pro.spring.rest.basis.serialization.CamelCaseToKebabCaseNamingStrategy;
 import java.io.File;
 import java.io.IOException;
-import java.net.URI;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -87,16 +86,14 @@ public class Zg2proRestTemplate extends RestTemplate {
         this.lInterceptors = interceptors;
     }
 
-    
     /**
      * a RestTemplate including logging interceptor The constructor also
      * initializes the RestTemplateErrorHandler, and jackson is initialized with
      * a simple ObjectMapper containing a camelCaseToKebabCase policy.
-     * 
-     * Also it loads a FormHttpMessageConverter, a
-     * StringHttpMessageConverter, a, ResourceHttpMessageConverter, and a
-     * ByteArrayHttpMessageConverter, of course at build you should already have
-     * loaded your json converter
+     *
+     * Also it loads a FormHttpMessageConverter, a StringHttpMessageConverter,
+     * a, ResourceHttpMessageConverter, and a ByteArrayHttpMessageConverter, of
+     * course at build you should already have loaded your json converter
      */
     public Zg2proRestTemplate() {
         this(null);
@@ -116,11 +113,10 @@ public class Zg2proRestTemplate extends RestTemplate {
      * a RestTemplate including logging interceptor The constructor also
      * initializes the RestTemplateErrorHandler, and jackson is initialized
      * thanks to the simplemodule.
-     * 
-     * Also it loads a FormHttpMessageConverter, a
-     * StringHttpMessageConverter, a, ResourceHttpMessageConverter, and a
-     * ByteArrayHttpMessageConverter, of course at build you should already have
-     * loaded your json converter
+     *
+     * Also it loads a FormHttpMessageConverter, a StringHttpMessageConverter,
+     * a, ResourceHttpMessageConverter, and a ByteArrayHttpMessageConverter, of
+     * course at build you should already have loaded your json converter
      *
      * @param sm
      */
@@ -180,17 +176,6 @@ public class Zg2proRestTemplate extends RestTemplate {
         interceptorsIntegration(lInterceptors);
     }
 
-//    /**
-//     * loads a FormHttpMessageConverter, a StringHttpMessageConverter, a,
-//     * ResourceHttpMessageConverter, and a ByteArrayHttpMessageConverter, of
-//     * course at build you should already have loaded your json converter
-//     */
-//    private void loadBasicMessageConverters() {
-//        this.getMessageConverters().add(new FormHttpMessageConverter());
-//        this.getMessageConverters().add(new StringHttpMessageConverter());
-//        this.getMessageConverters().add(new ByteArrayHttpMessageConverter());
-//        this.getMessageConverters().add(new ResourceHttpMessageConverter());
-//    }
     private <T> T postForPathPrivate(MultiValueMap headers, Path temp, String url, Class<T> returnType) throws RestClientException {
         headers = checkHttpHeaders(headers);
         HttpEntity<Resource> he = new HttpEntity<>(new FileSystemResource(temp.toFile()), headers);
@@ -211,7 +196,8 @@ public class Zg2proRestTemplate extends RestTemplate {
      * @param returnType: the return type of the webmethod
      * @param headers: a map of headers you want to attach to your request
      * (<b>NB:</b> handling your headers by an interceptor would slow down your
-     * query execution)
+     * query execution). By the way, even the LoggingRequestInterceptor should
+     * not be used here
      * @return
      */
     public <T> T postForPath(String url, Path file, Class<T> returnType, MultiValueMap headers) {
@@ -227,7 +213,8 @@ public class Zg2proRestTemplate extends RestTemplate {
      * deal with big files.
      * <b>NB:</b> handling your headers by an interceptor would slow down your
      * query execution, hencc if you have to use headers, another method will
-     * accept them as arguments
+     * accept them as arguments. By the way, even the LoggingRequestInterceptor
+     * should not be used here
      *
      * @param <T>: the return type of the webmethod
      * @param url: the url toward which a file (digital object) will be sent
@@ -256,7 +243,8 @@ public class Zg2proRestTemplate extends RestTemplate {
      * @param returnType: the return type of the webmethod
      * @param headers: a map of headers you want to attach to your request
      * (<b>NB:</b> handling your headers by an interceptor would slow down your
-     * query execution)
+     * query execution). By the way, even the LoggingRequestInterceptor should
+     * not be used here
      * @return
      * @throws java.io.IOException
      */
@@ -275,7 +263,8 @@ public class Zg2proRestTemplate extends RestTemplate {
      * deal with big files.
      * <b>NB:</b> handling your headers by an interceptor would slow down your
      * query execution, hence if you have to use headers, another method will
-     * accept them as arguments
+     * accept them as arguments. By the way, even the LoggingRequestInterceptor
+     * should not be used here
      *
      * When the upload is finished, your file will be deleted from your disk
      * space
@@ -302,7 +291,8 @@ public class Zg2proRestTemplate extends RestTemplate {
      * deal with big files.
      * <b>NB:</b> handling your headers by an interceptor would slow down your
      * query execution, hence if you have to use headers, another method will
-     * accept them as arguments
+     * accept them as arguments. By the way, even the LoggingRequestInterceptor
+     * should not be used here
      * <b>NB:</b> also you should know Path from java.nio is known to be more
      * performant than File from java.io and can provide all File class
      * capabilities
@@ -328,22 +318,9 @@ public class Zg2proRestTemplate extends RestTemplate {
         headers = checkHttpHeaders(headers);
         final Map singleValueMap = headers.toSingleValueMap();
         final Path temp = Paths.get(tmpFilePath);
-//        RequestCallback requestCallback = new RequestCallback() {
-//            @Override
-//            public void doWithRequest(ClientHttpRequest request) throws IOException {
-//                request.getHeaders().setAll(singleValueMap);
-//            }
-//        };
         RequestCallback requestCallback = (ClientHttpRequest request) -> {
             request.getHeaders().setAll(singleValueMap);
         };
-//        ResponseExtractor<Void> responseExtractor = new ResponseExtractor<Void>() {
-//            @Override
-//            public Void extractData(ClientHttpResponse response) throws IOException {
-//                Files.copy(response.getBody(), temp, StandardCopyOption.REPLACE_EXISTING);
-//                return null;
-//            }
-//        };
         ResponseExtractor<Void> responseExtractor = (ClientHttpResponse response) -> {
             Files.copy(response.getBody(), temp, StandardCopyOption.REPLACE_EXISTING);
             return null;
@@ -369,7 +346,8 @@ public class Zg2proRestTemplate extends RestTemplate {
      * segments, so you will not have any problem with memory management
      * especially if you have to deal with big files.
      * <b>NB:</b> handling your headers by an interceptor would slow down your
-     * query execution
+     * query execution. By the way, even the LoggingRequestInterceptor should
+     * not be used here
      *
      * @param serviceUrl
      * @param tmpFilePath
@@ -388,7 +366,8 @@ public class Zg2proRestTemplate extends RestTemplate {
      * especially if you have to deal with big files.
      * <b>NB:</b> handling your headers by an interceptor would slow down your
      * query execution, hence if you have to use headers, another method will
-     * accept them as arguments
+     * accept them as arguments. By the way, even the LoggingRequestInterceptor
+     * should not be used here
      *
      * @param serviceUrl
      * @param tmpFilePath
@@ -406,7 +385,8 @@ public class Zg2proRestTemplate extends RestTemplate {
      * especially if you have to deal with big files.
      * <b>NB:</b> handling your headers by an interceptor would slow down your
      * query execution, hence if you have to use headers, another method will
-     * accept them as arguments
+     * accept them as arguments. By the way, even the LoggingRequestInterceptor
+     * should not be used here
      * <b>NB:</b> also you should know Path from java.nio is known to be more
      * performant than File from java.io and can provide all File class
      * capabilities

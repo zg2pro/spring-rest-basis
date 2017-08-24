@@ -45,11 +45,6 @@ class ApplicationBoot {
     @Primary
     public TestRestTemplate zg2TestRestTemplate(ObjectProvider<RestTemplateBuilder> builderProvider, Environment environment) {
         Zg2proRestTemplate rt = new Zg2proRestTemplate();
-        //       rt.getMessageConverters().remove(0);
-        //       rt.loadBasicMessageConverters();
-//        RestTemplateBuilder builder = builderProvider.getIfAvailable();
-//        TestRestTemplate trt = builder == null ? new TestRestTemplate(rt)
-//                : new TestRestTemplate(builder.build());
         TestRestTemplate trt = new TestRestTemplate(rt);
         trt.setUriTemplateHandler(new LocalHostUriTemplateHandler(environment));
         return trt;
