@@ -1,4 +1,3 @@
-[![gitter](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/zg2pro/spring-rest-basis?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 [![MIT](https://img.shields.io/npm/l/inferno.svg?style=flat-square)](https://github.com/zg2pro/spring-rest-basis/blob/master/LICENSE.md)
 [![Build](https://travis-ci.org/zg2pro/spring-rest-basis.svg?branch=master)](https://travis-ci.org/zg2pro/spring-rest-basis)
 [![codecov](https://codecov.io/gh/zg2pro/spring-rest-basis/branch/master/graph/badge.svg)](https://codecov.io/gh/zg2pro/spring-rest-basis/branch/master)
