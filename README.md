@@ -1,4 +1,5 @@
 [![gitter](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/zg2pro/spring-rest-basis?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+[![MIT](https://img.shields.io/npm/l/inferno.svg?style=flat-square)](https://github.com/zg2pro/spring-rest-basis/blob/master/LICENSE.md)
 [![Build](https://travis-ci.org/zg2pro/spring-rest-basis.svg?branch=master)](https://travis-ci.org/zg2pro/spring-rest-basis)
 [![codecov](https://codecov.io/gh/zg2pro/spring-rest-basis/branch/master/graph/badge.svg)](https://codecov.io/gh/zg2pro/spring-rest-basis/branch/master)
 
@@ -10,15 +11,7 @@ auto-translation of variables from java to json, logging, exceptions serializati
 
 # License
 
-This library is developed under MIT License, 
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE.
+This library is developed under MIT License
 
 # continuous integration and deployment to central maven
 
