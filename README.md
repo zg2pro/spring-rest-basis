@@ -3,6 +3,8 @@
 [![codecov](https://codecov.io/gh/zg2pro/spring-rest-basis/branch/master/graph/badge.svg)](https://codecov.io/gh/zg2pro/spring-rest-basis/branch/master)
 
 # spring-rest-basis
+
+[![Join the chat at https://gitter.im/spring-rest-basis/Lobby](https://badges.gitter.im/spring-rest-basis/Lobby.svg)](https://gitter.im/spring-rest-basis/Lobby?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 utility configuration of spring's RestTemplate when implementing a Restful infrastructure, includes goodies for ssl, 
 auto-translation of variables from java to json, logging, exceptions serialization
 
