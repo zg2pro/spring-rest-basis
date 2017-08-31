@@ -24,8 +24,6 @@
 package com.github.zg2pro.spring.rest.basis.exceptions;
 
 import java.io.Serializable;
-import org.springframework.http.HttpStatus;
-import org.springframework.util.StringUtils;
 
 /**
  * serialized representation of a java exception
@@ -47,28 +45,6 @@ public class ErrorResource implements Serializable {
      * and deserialized, it needs to have a public void constructor
      */
     public ErrorResource() {
-    }
-
-    /**
-     * constructor by exception content
-     *
-     * @param code
-     * @param errorMessage
-     * @param errorClassName
-     * @param stackTrace
-     */
-    public ErrorResource(HttpStatus code, String errorMessage,
-            String errorClassName, StackTraceElement[] stackTrace) {
-        if (code == null
-                || StringUtils.isEmpty(errorMessage)
-                || StringUtils.isEmpty(errorClassName)
-                || stackTrace == null || stackTrace.length < 1) {
-            throw new IllegalArgumentException("an ErrorResource must contain the four pieces of information");
-        }
-        this.code = code.value();
-        this.errorMessage = errorMessage;
-        this.errorClassName = errorClassName;
-        this.stackTrace = new Zg2proStackTrace(stackTrace);
     }
 
     public int getCode() {

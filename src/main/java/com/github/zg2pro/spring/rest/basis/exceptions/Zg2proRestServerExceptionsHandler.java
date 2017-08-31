@@ -53,12 +53,11 @@ public class Zg2proRestServerExceptionsHandler extends ResponseEntityExceptionHa
             String logMessage, 
             HttpStatus status) {
         logger.error(logMessage, exception);
-        ErrorResource error = new ErrorResource(
-                status, 
-                exception.getMessage(), 
-                exception.getClass().getName(), 
-                exception.getStackTrace()
-        );
+        ErrorResource error = new ErrorResource();
+        error.setCode(status.value());
+        error.setErrorClassName(exception.getClass().getName());
+        error.setErrorMessage(exception.getMessage());
+        error.setStackTrace(new Zg2proStackTrace(exception.getStackTrace()));
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
         return handleExceptionInternal(exception, error, headers, status, request);
