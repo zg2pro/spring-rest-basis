@@ -8,6 +8,7 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.UUID;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import org.junit.Before;
 import org.junit.Test;
@@ -25,6 +26,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
 import org.springframework.core.env.Environment;
 import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.util.LinkedMultiValueMap;
 
 /**
  * Spring boot server (tomcat embedded) runner
@@ -79,6 +81,10 @@ public class StreamingTest {
     public void testStream() throws IOException {
         String s = ((Zg2proRestTemplate) rt.getRestTemplate()).postForPath(TEST_URL_FILE_UPLOAD, originalFile, String.class);
         assertThat(s).isEqualTo("ok");
+        
+        LinkedMultiValueMap httpHeaders = new LinkedMultiValueMap();
+        httpHeaders.add("XX-AUTH-TOKEN", UUID.randomUUID().toString());
+        ((Zg2proRestTemplate) rt.getRestTemplate()).setFilesStreamingOperationsHttpHeaders(httpHeaders);        
         
         Path sp = ((Zg2proRestTemplate) rt.getRestTemplate()).getForObject(TEST_URL_FILE_DOWNLOAD, "target/test-content.tmp");
         byte[] newFile = Files.readAllBytes(sp);

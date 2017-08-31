@@ -24,6 +24,8 @@
 package com.github.zg2pro.spring.rest.basis.exceptions;
 
 import java.io.Serializable;
+import org.springframework.http.HttpStatus;
+import org.springframework.util.StringUtils;
 
 /**
  * serialized representation of a java exception
@@ -35,45 +37,38 @@ public class ErrorResource implements Serializable {
 
     private static final long serialVersionUID = -6948542874457786251L;
 
-    private String code;
+    private int code;
     private String errorClassName;
     private String errorMessage;
     private Zg2proStackTrace stackTrace = new Zg2proStackTrace();
 
     /**
-     * default constructor
-     */
-    public ErrorResource() {
-        super();
-    }
-
-    /**
-     * constructor by excpetion content
+     * constructor by exception content
      *
      * @param code
      * @param errorMessage
      * @param errorClassName
      * @param stackTrace
      */
-    public ErrorResource(String code, String errorMessage, String errorClassName, StackTraceElement[] stackTrace) {
-        this.code = code;
+    public ErrorResource(HttpStatus code, String errorMessage,
+            String errorClassName, StackTraceElement[] stackTrace) {
+        if (code == null 
+                || StringUtils.isEmpty(errorMessage) 
+                || StringUtils.isEmpty(errorClassName)
+                || stackTrace == null || stackTrace.length < 1){
+            throw new IllegalArgumentException("an ErrorResource must contain the four pieces of information");
+        }
+        this.code = code.value();
         this.errorMessage = errorMessage;
         this.errorClassName = errorClassName;
-        for (StackTraceElement ste : stackTrace) {
-            Zg2proStackTraceElement nste = new Zg2proStackTraceElement();
-            nste.setDeclaringClass(ste.getClassName());
-            nste.setFileName(ste.getFileName());
-            nste.setLineNumber(ste.getLineNumber());
-            nste.setMethodName(ste.getMethodName());
-            this.stackTrace.add(nste);
-        }
+        this.stackTrace = new Zg2proStackTrace(stackTrace);
     }
 
-    public String getCode() {
+    public int getCode() {
         return code;
     }
 
-    public void setCode(String code) {
+    public void setCode(int code) {
         this.code = code;
     }
 
@@ -92,8 +87,6 @@ public class ErrorResource implements Serializable {
     public void setErrorMessage(String errorMessage) {
         this.errorMessage = errorMessage;
     }
-
-    
 
     public Zg2proStackTrace getStackTrace() {
         return stackTrace;

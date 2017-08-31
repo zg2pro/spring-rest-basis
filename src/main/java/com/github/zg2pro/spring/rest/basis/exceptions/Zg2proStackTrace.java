@@ -44,4 +44,15 @@ public class Zg2proStackTrace extends ArrayList<Zg2proStackTraceElement> {
         super();
     }
 
+    public Zg2proStackTrace(StackTraceElement[] stackElements) {
+        for (StackTraceElement ste : stackElements) {
+            Zg2proStackTraceElement nste = new Zg2proStackTraceElement();
+            nste.setDeclaringClass(ste.getClassName());
+            nste.setFileName(ste.getFileName());
+            nste.setLineNumber(ste.getLineNumber());
+            nste.setMethodName(ste.getMethodName());
+            add(nste);
+        }
+    }
+
 }

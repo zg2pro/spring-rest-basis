@@ -102,7 +102,7 @@ public class LogsTest {
         ResponseEntity<String> resp;
         for (Level l : Level.values()) {
             rt.getRestTemplate().setRequestFactory(
-                    LoggingRequestFactoryFactory.build(StandardCharsets.UTF_8, 1000, l)
+                    LoggingRequestFactoryFactory.build(new LoggingRequestInterceptor(StandardCharsets.UTF_8, 1000, l))
             );
             for (String str : new String[]{TEST_URL_GET_LONG_REPLY, TEST_URL_GET}) {
                 resp = rt.getForEntity(str, String.class);

@@ -75,6 +75,7 @@ import org.springframework.web.client.RestTemplate;
 public class Zg2proRestTemplate extends RestTemplate {
 
     private List<ClientHttpRequestInterceptor> lInterceptors;
+    private MultiValueMap filesStreamingOperationsHttpHeaders;
 
     @Override
     public List<ClientHttpRequestInterceptor> getInterceptors() {
@@ -84,6 +85,27 @@ public class Zg2proRestTemplate extends RestTemplate {
     @Override
     public void setInterceptors(List<ClientHttpRequestInterceptor> interceptors) {
         this.lInterceptors = interceptors;
+    }
+
+    public MultiValueMap getFilesStreamingOperationsHttpHeaders() {
+        return filesStreamingOperationsHttpHeaders;
+    }
+
+    /**
+     *
+     * @param filesStreamingOperationsHttpHeaders: a map of headers you want to
+     * attach to your request (<b>NB:</b> handling your headers by an
+     * interceptor would slow down your query execution). By the way, even the
+     * LoggingRequestInterceptor should not be used here
+     */
+    public void setFilesStreamingOperationsHttpHeaders(MultiValueMap filesStreamingOperationsHttpHeaders) {
+        if (filesStreamingOperationsHttpHeaders == null) {
+            filesStreamingOperationsHttpHeaders = new LinkedMultiValueMap();
+        }
+        if (!filesStreamingOperationsHttpHeaders.containsKey(HttpHeaders.CONTENT_TYPE)) {
+            filesStreamingOperationsHttpHeaders.add(HttpHeaders.CONTENT_TYPE, MimeTypeUtils.APPLICATION_OCTET_STREAM_VALUE);
+        }
+        this.filesStreamingOperationsHttpHeaders = filesStreamingOperationsHttpHeaders;
     }
 
     /**
@@ -176,9 +198,8 @@ public class Zg2proRestTemplate extends RestTemplate {
         interceptorsIntegration(lInterceptors);
     }
 
-    private <T> T postForPathPrivate(MultiValueMap headers, Path temp, String url, Class<T> returnType) throws RestClientException {
-        headers = checkHttpHeaders(headers);
-        HttpEntity<Resource> he = new HttpEntity<>(new FileSystemResource(temp.toFile()), headers);
+    private <T> T postForPathPrivate(Path temp, String url, Class<T> returnType) throws RestClientException {
+        HttpEntity<Resource> he = new HttpEntity<>(new FileSystemResource(temp.toFile()), getFilesStreamingOperationsHttpHeaders());
         return this.postForObject(url, he, returnType);
     }
 
@@ -194,36 +215,10 @@ public class Zg2proRestTemplate extends RestTemplate {
      * @param url: the url toward which a file (digital object) will be sent
      * @param file: the file to upload toward the service
      * @param returnType: the return type of the webmethod
-     * @param headers: a map of headers you want to attach to your request
-     * (<b>NB:</b> handling your headers by an interceptor would slow down your
-     * query execution). By the way, even the LoggingRequestInterceptor should
-     * not be used here
-     * @return
-     */
-    public <T> T postForPath(String url, Path file, Class<T> returnType, MultiValueMap headers) {
-        return postForPathPrivate(headers, file, url, returnType);
-    }
-
-    /**
-     *
-     * post a file to a service, the post is executed in a pseudo-streaming
-     * mode, which means TCP segments are sent toward the url immediately as
-     * soon as the sufficient data is read inside the input file. So you will
-     * not have any problem with memory management especially if you have to
-     * deal with big files.
-     * <b>NB:</b> handling your headers by an interceptor would slow down your
-     * query execution, hencc if you have to use headers, another method will
-     * accept them as arguments. By the way, even the LoggingRequestInterceptor
-     * should not be used here
-     *
-     * @param <T>: the return type of the webmethod
-     * @param url: the url toward which a file (digital object) will be sent
-     * @param file: the file to upload toward the service
-     * @param returnType: the return type of the webmethod
      * @return
      */
     public <T> T postForPath(String url, Path file, Class<T> returnType) {
-        return postForPathPrivate(null, file, url, returnType);
+        return postForPathPrivate(file, url, returnType);
     }
 
     /**
@@ -233,38 +228,6 @@ public class Zg2proRestTemplate extends RestTemplate {
      * soon as the sufficient data is read inside the input file. So you will
      * not have any problem with memory management especially if you have to
      * deal with big files.
-     *
-     * When the upload is finished, your file will be deleted from your disk
-     * space
-     *
-     * @param <T>: the return type of the webmethod
-     * @param url: the url toward which a file (digital object) will be sent
-     * @param file: the file to upload toward the service
-     * @param returnType: the return type of the webmethod
-     * @param headers: a map of headers you want to attach to your request
-     * (<b>NB:</b> handling your headers by an interceptor would slow down your
-     * query execution). By the way, even the LoggingRequestInterceptor should
-     * not be used here
-     * @return
-     * @throws java.io.IOException
-     */
-    public <T> T postForPathAndDelete(String url, Path file, Class<T> returnType, MultiValueMap headers) throws IOException {
-        T response = postForPathPrivate(headers, file, url, returnType);
-        Files.delete(file);
-        return response;
-    }
-
-    /**
-     *
-     * post a file to a service, the post is executed in a pseudo-streaming
-     * mode, which means TCP segments are sent toward the url immediately as
-     * soon as the sufficient data is read inside the input file. So you will
-     * not have any problem with memory management especially if you have to
-     * deal with big files.
-     * <b>NB:</b> handling your headers by an interceptor would slow down your
-     * query execution, hence if you have to use headers, another method will
-     * accept them as arguments. By the way, even the LoggingRequestInterceptor
-     * should not be used here
      *
      * When the upload is finished, your file will be deleted from your disk
      * space
@@ -277,7 +240,7 @@ public class Zg2proRestTemplate extends RestTemplate {
      * @throws java.io.IOException
      */
     public <T> T postForPathAndDelete(String url, Path file, Class<T> returnType) throws IOException {
-        T response = postForPathPrivate(null, file, url, returnType);
+        T response = postForPathPrivate(file, url, returnType);
         Files.delete(file);
         return response;
     }
@@ -309,14 +272,13 @@ public class Zg2proRestTemplate extends RestTemplate {
      */
     public <T> T postForFileAndDelete(String url, File file, Class<T> returnType) throws IOException {
         Path p = file.toPath();
-        T response = postForPathPrivate(null, p, url, returnType);
+        T response = postForPathPrivate(p, url, returnType);
         Files.delete(p);
         return response;
     }
 
-    private Path getForObjectPrivate(String serviceUrl, String tmpFilePath, MultiValueMap headers) {
-        headers = checkHttpHeaders(headers);
-        final Map singleValueMap = headers.toSingleValueMap();
+    private Path getForObjectPrivate(String serviceUrl, String tmpFilePath) {
+        final Map singleValueMap = getFilesStreamingOperationsHttpHeaders().toSingleValueMap();
         final Path temp = Paths.get(tmpFilePath);
         RequestCallback requestCallback = (ClientHttpRequest request) -> {
             request.getHeaders().setAll(singleValueMap);
@@ -327,35 +289,6 @@ public class Zg2proRestTemplate extends RestTemplate {
         };
         this.execute(serviceUrl, HttpMethod.GET, requestCallback, responseExtractor);
         return temp;
-    }
-
-    private MultiValueMap checkHttpHeaders(MultiValueMap headers) {
-        if (headers == null) {
-            headers = new LinkedMultiValueMap();
-        }
-        if (!headers.containsKey(HttpHeaders.CONTENT_TYPE)) {
-            headers.add(HttpHeaders.CONTENT_TYPE, MimeTypeUtils.APPLICATION_OCTET_STREAM_VALUE);
-        }
-        return headers;
-    }
-
-    /**
-     * download a file from a url and retrieve a file stored on disk space, can
-     * be a temporary file. The file is downloaded in streaming, which means the
-     * file is being written at the same time the service replies its TCP
-     * segments, so you will not have any problem with memory management
-     * especially if you have to deal with big files.
-     * <b>NB:</b> handling your headers by an interceptor would slow down your
-     * query execution. By the way, even the LoggingRequestInterceptor should
-     * not be used here
-     *
-     * @param serviceUrl
-     * @param tmpFilePath
-     * @param headers
-     * @return
-     */
-    public Path getForObject(String serviceUrl, String tmpFilePath, MultiValueMap headers) {
-        return getForObjectPrivate(serviceUrl, tmpFilePath, headers);
     }
 
     /**
@@ -374,7 +307,7 @@ public class Zg2proRestTemplate extends RestTemplate {
      * @return
      */
     public Path getForObject(String serviceUrl, String tmpFilePath) {
-        return getForObjectPrivate(serviceUrl, tmpFilePath, null);
+        return getForObjectPrivate(serviceUrl, tmpFilePath);
     }
 
     /**
@@ -396,7 +329,7 @@ public class Zg2proRestTemplate extends RestTemplate {
      * @return
      */
     public File getForObjectAsFile(String serviceUrl, String tmpFilePath) {
-        return getForObjectPrivate(serviceUrl, tmpFilePath, null).toFile();
+        return getForObjectPrivate(serviceUrl, tmpFilePath).toFile();
     }
 
 }

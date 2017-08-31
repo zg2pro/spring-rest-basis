@@ -26,9 +26,10 @@ package com.github.zg2pro.spring.rest.basis.exceptions;
 import java.io.Serializable;
 
 /**
- * 
- * This class represents a line in the stack of errors, in order to have it serialized and deserialized
- * 
+ *
+ * This class represents a line in the stack of errors, in order to have it
+ * serialized and deserialized
+ *
  * @author zg2pro
  * @since 0.2
  */

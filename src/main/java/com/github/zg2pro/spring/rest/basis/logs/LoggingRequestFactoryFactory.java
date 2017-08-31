@@ -23,10 +23,8 @@
  */
 package com.github.zg2pro.spring.rest.basis.logs;
 
-import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.List;
-import org.slf4j.event.Level;
 import org.springframework.http.client.BufferingClientHttpRequestFactory;
 import org.springframework.http.client.ClientHttpRequestInterceptor;
 import org.springframework.http.client.SimpleClientHttpRequestFactory;
@@ -44,11 +42,6 @@ public class LoggingRequestFactoryFactory {
 
     public static LoggingRequestFactory build() {
         LoggingRequestInterceptor lri = new LoggingRequestInterceptor();
-        return interceptorToRequestFactory(lri);
-    }
-
-    public static LoggingRequestFactory build(Charset encoding, int maxBodyLength, Level level) {
-        LoggingRequestInterceptor lri = new LoggingRequestInterceptor(encoding, maxBodyLength, level);
         return interceptorToRequestFactory(lri);
     }
 

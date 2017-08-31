@@ -48,10 +48,13 @@ public class Zg2proRestServerExceptionsHandler extends ResponseEntityExceptionHa
 
     private static final Logger logger = LoggerFactory.getLogger(Zg2proRestServerExceptionsHandler.class);
 
-    private ResponseEntity<Object> globalHandler(Exception exception, WebRequest request, String logMessage, HttpStatus status) {
+    private ResponseEntity<Object> globalHandler(Exception exception, 
+            WebRequest request, 
+            String logMessage, 
+            HttpStatus status) {
         logger.error(logMessage, exception);
         ErrorResource error = new ErrorResource(
-                status.toString(), 
+                status, 
                 exception.getMessage(), 
                 exception.getClass().getName(), 
                 exception.getStackTrace()
