@@ -2,6 +2,7 @@ package com.github.zg2pro.spring.rest.basis.exceptions;
 
 import com.github.zg2pro.spring.rest.basis.*;
 import static com.github.zg2pro.spring.rest.basis.MockedControllers.EXCEPTION_MESSAGE;
+import static com.github.zg2pro.spring.rest.basis.MockedControllers.TEST_URL_ERROR_REPLY;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.assertj.core.api.AssertionsForClassTypes.fail;
 import org.junit.Test;
@@ -63,7 +64,7 @@ public class ExceptionsTest {
     public void testError() {
         rt.getRestTemplate().setErrorHandler(new RestTemplateErrorHandler());
         try {
-            rt.getForObject(MockedControllers.TEST_URL_ERROR_REPLY, ReturnedStructure.class);
+            rt.getForObject(TEST_URL_ERROR_REPLY, ReturnedStructure.class);
             fail("we should not get to this point");
         } catch (RestTemplateException rte) {
             StackTracedException ste = (StackTracedException) rte.getCause();

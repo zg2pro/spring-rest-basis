@@ -119,6 +119,7 @@ public class LoggingRequestInterceptor implements ClientHttpRequestInterceptor {
      *
      * @param encoding
      * @param maxBodyLength
+     * @param level
      */
     public LoggingRequestInterceptor(Charset encoding, int maxBodyLength, Level level) {
         super();
@@ -163,9 +164,8 @@ public class LoggingRequestInterceptor implements ClientHttpRequestInterceptor {
             InputStreamReader isr = null;
             try {
                 isr = new InputStreamReader(is, encoding);
-                char[] buffer = new char[BUFFER_LENGTH];
                 try (BufferedReader bufferedReader = new BufferedReader(isr)) {
-                    logResponse(response, bufferedReader, buffer);
+                    logResponse(response, bufferedReader);
                 }
             } finally {
                 if (isr != null) {
@@ -181,18 +181,20 @@ public class LoggingRequestInterceptor implements ClientHttpRequestInterceptor {
         }
     }
 
-    private void logResponse(ClientHttpResponse response, final BufferedReader bufferedReader, char[] buffer) throws IOException {
+    private void logResponse(ClientHttpResponse response,
+            final BufferedReader bufferedReader) throws IOException {
         log("============================response begin==========================================");
         log("status code: {}", response.getStatusCode());
         log("status text: {}", response.getStatusText());
         if (bufferedReader.markSupported()) {
-            writeBody(bufferedReader, buffer);
+            writeBody(bufferedReader);
         }
         bufferedReader.close();
         log("=======================response end=================================================");
     }
 
-    private void writeBody(final BufferedReader bufferedReader, char[] buffer) throws IOException {
+    private void writeBody(final BufferedReader bufferedReader) throws IOException {
+        char[] buffer = new char[BUFFER_LENGTH];
         StringBuilder inputStringBuilder = new StringBuilder("Response Body : ");
         bufferedReader.mark(MARK_LENGTH);
         int len = bufferedReader.read(buffer);

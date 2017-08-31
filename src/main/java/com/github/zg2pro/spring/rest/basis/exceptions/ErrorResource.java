@@ -43,6 +43,13 @@ public class ErrorResource implements Serializable {
     private Zg2proStackTrace stackTrace = new Zg2proStackTrace();
 
     /**
+     * as this object will be transmitted between server and client, serialized
+     * and deserialized, it needs to have a public void constructor
+     */
+    public ErrorResource() {
+    }
+
+    /**
      * constructor by exception content
      *
      * @param code
@@ -52,10 +59,10 @@ public class ErrorResource implements Serializable {
      */
     public ErrorResource(HttpStatus code, String errorMessage,
             String errorClassName, StackTraceElement[] stackTrace) {
-        if (code == null 
-                || StringUtils.isEmpty(errorMessage) 
+        if (code == null
+                || StringUtils.isEmpty(errorMessage)
                 || StringUtils.isEmpty(errorClassName)
-                || stackTrace == null || stackTrace.length < 1){
+                || stackTrace == null || stackTrace.length < 1) {
             throw new IllegalArgumentException("an ErrorResource must contain the four pieces of information");
         }
         this.code = code.value();
