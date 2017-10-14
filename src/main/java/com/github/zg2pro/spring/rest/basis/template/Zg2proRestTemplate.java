@@ -56,7 +56,6 @@ import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.http.converter.ResourceHttpMessageConverter;
 import org.springframework.http.converter.StringHttpMessageConverter;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
-import org.springframework.lang.Nullable;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MimeTypeUtils;
@@ -183,8 +182,8 @@ public class Zg2proRestTemplate extends RestTemplate {
      * CamelCaseToKebabCase policy
      * @param lInterceptors - among which could be LoggingRequestInterceptor
      */
-    public Zg2proRestTemplate(@Nullable List<HttpMessageConverter<?>> lConverters,
-            @Nullable List<ClientHttpRequestInterceptor> lInterceptors) {
+    public Zg2proRestTemplate(List<HttpMessageConverter<?>> lConverters,
+            List<ClientHttpRequestInterceptor> lInterceptors) {
         super();
         this.setErrorHandler(new RestTemplateErrorHandler());
         if (!CollectionUtils.isEmpty(lConverters)) {

@@ -74,19 +74,23 @@ public class StreamingTest {
     @Before
     public void init(){
         ClassLoader classLoader = getClass().getClassLoader();
-        originalFile = new File(classLoader.getResource("com/github/zg2pro/spring/rest/basis/streaming/test-binary.JPG").getFile()).toPath();
+        originalFile = new File(
+                classLoader.getResource("com/github/zg2pro/spring/rest/basis/streaming/test-binary.JPG")
+                        .getFile()).toPath();
     }
     
     @Test
     public void testStream() throws IOException {
-        String s = ((Zg2proRestTemplate) rt.getRestTemplate()).postForPath(TEST_URL_FILE_UPLOAD, originalFile, String.class);
+        String s = ((Zg2proRestTemplate) rt.getRestTemplate()).postForPath(TEST_URL_FILE_UPLOAD, 
+                originalFile, String.class);
         assertThat(s).isEqualTo("ok");
         
         LinkedMultiValueMap httpHeaders = new LinkedMultiValueMap();
         httpHeaders.add("XX-AUTH-TOKEN", UUID.randomUUID().toString());
         ((Zg2proRestTemplate) rt.getRestTemplate()).setFilesStreamingOperationsHttpHeaders(httpHeaders);        
         
-        Path sp = ((Zg2proRestTemplate) rt.getRestTemplate()).getForObject(TEST_URL_FILE_DOWNLOAD, "target/test-content.tmp");
+        Path sp = ((Zg2proRestTemplate) rt.getRestTemplate()).getForObject(TEST_URL_FILE_DOWNLOAD,
+                "target/test-content.tmp");
         byte[] newFile = Files.readAllBytes(sp);
         Files.delete(sp);
         byte[] oldFile = Files.readAllBytes(originalFile);
