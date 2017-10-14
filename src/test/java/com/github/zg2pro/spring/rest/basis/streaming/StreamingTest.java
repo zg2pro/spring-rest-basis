@@ -1,8 +1,11 @@
 package com.github.zg2pro.spring.rest.basis.streaming;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.module.SimpleModule;
 import com.github.zg2pro.spring.rest.basis.*;
 import static com.github.zg2pro.spring.rest.basis.MockedControllers.TEST_URL_FILE_DOWNLOAD;
 import static com.github.zg2pro.spring.rest.basis.MockedControllers.TEST_URL_FILE_UPLOAD;
+import com.github.zg2pro.spring.rest.basis.serialization.CamelCaseToKebabCaseNamingStrategy;
 import com.github.zg2pro.spring.rest.basis.template.Zg2proRestTemplate;
 import java.io.File;
 import java.io.IOException;
@@ -46,7 +49,8 @@ class ApplicationBoot {
     @Bean
     @Primary
     public TestRestTemplate zg2TestRestTemplate(ObjectProvider<RestTemplateBuilder> builderProvider, Environment environment) {
-        Zg2proRestTemplate rt = new Zg2proRestTemplate();
+        SimpleModule sm = new SimpleModule();
+        Zg2proRestTemplate rt = new Zg2proRestTemplate(sm);
         TestRestTemplate trt = new TestRestTemplate(rt);
         trt.setUriTemplateHandler(new LocalHostUriTemplateHandler(environment));
         return trt;
@@ -70,25 +74,26 @@ public class StreamingTest {
     private TestRestTemplate rt;
 
     private Path originalFile;
-    
+
     @Before
-    public void init(){
+    public void init() {
         ClassLoader classLoader = getClass().getClassLoader();
         originalFile = new File(
                 classLoader.getResource("com/github/zg2pro/spring/rest/basis/streaming/test-binary.JPG")
                         .getFile()).toPath();
     }
-    
+
     @Test
     public void testStream() throws IOException {
-        String s = ((Zg2proRestTemplate) rt.getRestTemplate()).postForPath(TEST_URL_FILE_UPLOAD, 
+        String s = ((Zg2proRestTemplate) rt.getRestTemplate()).postForPath(TEST_URL_FILE_UPLOAD,
                 originalFile, String.class);
         assertThat(s).isEqualTo("ok");
-        
+
         LinkedMultiValueMap httpHeaders = new LinkedMultiValueMap();
         httpHeaders.add("XX-AUTH-TOKEN", UUID.randomUUID().toString());
-        ((Zg2proRestTemplate) rt.getRestTemplate()).setFilesStreamingOperationsHttpHeaders(httpHeaders);        
-        
+        ((Zg2proRestTemplate) rt.getRestTemplate()).setFilesStreamingOperationsHttpHeaders(null);
+        ((Zg2proRestTemplate) rt.getRestTemplate()).setFilesStreamingOperationsHttpHeaders(httpHeaders);
+
         Path sp = ((Zg2proRestTemplate) rt.getRestTemplate()).getForObject(TEST_URL_FILE_DOWNLOAD,
                 "target/test-content.tmp");
         byte[] newFile = Files.readAllBytes(sp);
