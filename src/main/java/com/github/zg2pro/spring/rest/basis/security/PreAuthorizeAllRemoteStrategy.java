@@ -38,11 +38,10 @@ import org.springframework.stereotype.Service;
 
 /**
  *
- * This class will help you to check upon each build (if you use it jointly 
- * with a maven plugin) or upon each app start (if you want to declare a 
- * spring bean) whether all your remote methods have been secured with
- * a set of permissions
- * 
+ * This class will help you to check upon each build (if you use it jointly with
+ * a maven plugin) or upon each app start (if you want to declare a spring bean)
+ * whether all your remote methods have been secured with a set of permissions
+ *
  * Conditions to make it work: your remote signatures must be placed in a
  * dedicated interface suffixed with "Remote" your local signatures must be
  * placed in an interface suffixed with "Local" however you can always extend
@@ -90,8 +89,12 @@ public class PreAuthorizeAllRemoteStrategy {
         String className;
         if (resourcePath.contains("!")) {
             className = resourcePath.split("!")[1];
-        } else {
+        } else if (resourcePath.contains("WEB-INF/classes")) {
             className = resourcePath.split("WEB-INF/classes")[1];
+        } else if (resourcePath.contains("test-classes")){
+            className = resourcePath.split("test-classes")[1];
+        } else {
+            className = resourcePath.split("target/classes")[1];
         }
         return Class.forName(className.replaceAll("/", ".").replaceAll("\\.class", "").substring(1));
     }
@@ -135,27 +138,31 @@ public class PreAuthorizeAllRemoteStrategy {
         return m;
     }
 
-    public void processVerification() throws ClassNotFoundException, NoSuchMethodException, IOException {
-        Map<Method, Method> remoteToServ = new HashMap<>();
-        for (Class c : findServiceClasses()) {
-            // Used to check all services' methods. 
-            //So we must use 'getDeclaredMethods' reflection method to do the job.
-            for (Method beanMethod : c.getDeclaredMethods()) {
-                Method interfaceMeth = searchRemote(c, beanMethod);
-                if (interfaceMeth != null) {
-                    remoteToServ.put(interfaceMeth, beanMethod);
+    public void processVerification() {
+        try {
+            Map<Method, Method> remoteToServ = new HashMap<>();
+            for (Class c : findServiceClasses()) {
+                // Used to check all services' methods. 
+                //So we must use 'getDeclaredMethods' reflection method to do the job.
+                for (Method beanMethod : c.getDeclaredMethods()) {
+                    Method interfaceMeth = searchRemote(c, beanMethod);
+                    if (interfaceMeth != null) {
+                        remoteToServ.put(interfaceMeth, beanMethod);
+                    }
                 }
             }
-        }
-        for (Method remoteMethod : remoteToServ.keySet()) {
-            if (!remoteMethod.isAnnotationPresent(annotationUsedForPermissions)) {
-                throw new SecurityException("all remote methods must be annotated with @" 
-                        + annotationUsedForPermissions.getSimpleName() + ": " + remoteMethod);
+            for (Method remoteMethod : remoteToServ.keySet()) {
+                if (!remoteMethod.isAnnotationPresent(annotationUsedForPermissions)) {
+                    throw new SecurityException("all remote methods must be annotated with @"
+                            + annotationUsedForPermissions.getSimpleName() + ": " + remoteMethod);
+                }
+                if (!remoteToServ.get(remoteMethod).isAnnotationPresent(PreAuthorize.class)) {
+                    throw new SecurityException("all remote methods must be annotated with @PreAuthorize: "
+                            + remoteMethod);
+                }
             }
-            if (!remoteToServ.get(remoteMethod).isAnnotationPresent(PreAuthorize.class)) {
-                throw new SecurityException("all remote methods must be annotated with @PreAuthorize: " 
-                        + remoteMethod);
-            }
+        } catch (ClassNotFoundException | IOException e) {
+            throw new IllegalStateException(e);
         }
     }
 
