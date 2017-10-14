@@ -138,6 +138,11 @@ public class PreAuthorizeAllRemoteStrategy {
         return m;
     }
 
+    /**
+     * runs the check and throws a SecurityException if a problem
+     * is encountered, either a PreAuthorize is missing or you 
+     * did not assign permissions to your remote service
+     */
     public void processVerification() {
         try {
             Map<Method, Method> remoteToServ = new HashMap<>();

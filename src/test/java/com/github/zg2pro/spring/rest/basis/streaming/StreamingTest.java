@@ -1,11 +1,9 @@
 package com.github.zg2pro.spring.rest.basis.streaming;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.module.SimpleModule;
 import com.github.zg2pro.spring.rest.basis.*;
 import static com.github.zg2pro.spring.rest.basis.MockedControllers.TEST_URL_FILE_DOWNLOAD;
 import static com.github.zg2pro.spring.rest.basis.MockedControllers.TEST_URL_FILE_UPLOAD;
-import com.github.zg2pro.spring.rest.basis.serialization.CamelCaseToKebabCaseNamingStrategy;
 import com.github.zg2pro.spring.rest.basis.template.Zg2proRestTemplate;
 import java.io.File;
 import java.io.IOException;
