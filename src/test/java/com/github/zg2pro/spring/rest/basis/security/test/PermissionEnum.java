@@ -7,6 +7,7 @@ package com.github.zg2pro.spring.rest.basis.security.test;
 public enum PermissionEnum {
     
     CAN_DO_ONE,
-    CAN_DO_TWO
+    CAN_DO_TWO,
+    CAN_DO_THREE
     
 }

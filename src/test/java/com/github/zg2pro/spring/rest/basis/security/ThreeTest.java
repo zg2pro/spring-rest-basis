@@ -20,12 +20,12 @@ import org.springframework.test.context.junit4.SpringRunner;
 @RunWith(MockitoJUnitRunner.class)
 @EnableAutoConfiguration
 @Configuration
-class ApplicationOneBoot {
+class ApplicationThreeBoot {
 
     @Bean
     Boolean checkSecurity() {
         PreAuthorizeAllRemoteStrategy paars = new PreAuthorizeAllRemoteStrategy(PermissionCheckAnnotation.class,
-                PermissionCheckAnnotation.class.getPackage().getName() + ".one");
+                PermissionCheckAnnotation.class.getPackage().getName() + ".three");
         try {
             paars.processVerification();
             return Boolean.TRUE;
@@ -44,16 +44,16 @@ class ApplicationOneBoot {
  */
 @RunWith(SpringRunner.class)
 @SpringBootTest(
-        classes = {ApplicationOneBoot.class},
+        classes = {ApplicationThreeBoot.class},
         webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-public class OneTest {
+public class ThreeTest {
 
     @Autowired
     private Boolean checkSecurity;
 
     @Test
     public void testCheck() {
-        assertThat(checkSecurity).isEqualTo(Boolean.FALSE);
+        assertThat(checkSecurity).isEqualTo(Boolean.TRUE);
     }
 
 }
