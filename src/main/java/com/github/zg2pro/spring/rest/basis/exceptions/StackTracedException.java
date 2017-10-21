@@ -59,18 +59,18 @@ public class StackTracedException extends Exception {
     /**
      * constructor
      *
-     * @param nestErrorResource
+     * @param errorResource
      */
-    public StackTracedException(ErrorResource nestErrorResource) {
-        super("HttpStatus:" + nestErrorResource.getCode() + " - " + nestErrorResource.getErrorMessage());
+    public StackTracedException(ErrorResource errorResource) {
+        super("HttpStatus:" + errorResource.getCode() + " - " + errorResource.getErrorMessage());
         try {
             // Non predifined error class. So we must use reflection method 
-            Class excClazz = Class.forName(nestErrorResource.getErrorClassName());
+            Class excClazz = Class.forName(errorResource.getErrorClassName());
             Object o = excClazz.newInstance();
-            ((Throwable) o).setStackTrace(mapper(nestErrorResource.getStackTrace()));
+            ((Throwable) o).setStackTrace(mapper(errorResource.getStackTrace()));
             initCause((Throwable) o);
         } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | ClassCastException cnfe) {
-            super.setStackTrace(mapper(nestErrorResource.getStackTrace()));
+            super.setStackTrace(mapper(errorResource.getStackTrace()));
             logger.warn("exception occured when mapping an exception {}", cnfe);
         }
     }

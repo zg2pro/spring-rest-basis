@@ -23,9 +23,7 @@
  */
 package com.github.zg2pro.spring.rest.basis.template;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.module.SimpleModule;
-import com.github.zg2pro.spring.rest.basis.exceptions.RestTemplateErrorHandler;
 import com.github.zg2pro.spring.rest.basis.logs.LoggingRequestFactoryFactory;
 import com.github.zg2pro.spring.rest.basis.logs.LoggingRequestInterceptor;
 import java.util.ArrayList;
@@ -34,12 +32,7 @@ import org.springframework.http.client.BufferingClientHttpRequestFactory;
 import org.springframework.http.client.ClientHttpRequestInterceptor;
 import org.springframework.http.client.InterceptingClientHttpRequestFactory;
 import org.springframework.http.client.SimpleClientHttpRequestFactory;
-import org.springframework.http.converter.ByteArrayHttpMessageConverter;
-import org.springframework.http.converter.FormHttpMessageConverter;
 import org.springframework.http.converter.HttpMessageConverter;
-import org.springframework.http.converter.ResourceHttpMessageConverter;
-import org.springframework.http.converter.StringHttpMessageConverter;
-import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 
 /**
  *
@@ -61,11 +54,31 @@ public class Zg2proRestTemplate extends AbstractZg2proRestTemplate {
                 )
         );
     }
-
+    
+    /**
+     * a RestTemplate including logging interceptor The constructor also
+     * initializes the RestTemplateErrorHandler, and jackson is initialized with
+     * a simple ObjectMapper containing a camelCaseToKebabCase policy.
+     *
+     * Also it loads a FormHttpMessageConverter, a StringHttpMessageConverter,
+     * a, ResourceHttpMessageConverter, and a ByteArrayHttpMessageConverter, of
+     * course at build you should already have loaded your json converter
+     */
     public Zg2proRestTemplate() {
-        super();
+        this(null);
     }
 
+    /**
+     * a RestTemplate including logging interceptor The constructor also
+     * initializes the RestTemplateErrorHandler, and jackson is initialized
+     * thanks to the simplemodule.
+     *
+     * Also it loads a FormHttpMessageConverter, a StringHttpMessageConverter,
+     * a, ResourceHttpMessageConverter, and a ByteArrayHttpMessageConverter, of
+     * course at build you should already have loaded your json converter
+     *
+     * @param sm
+     */
     public Zg2proRestTemplate(SimpleModule sm) {
         super(sm);
         //interceptors
@@ -75,6 +88,15 @@ public class Zg2proRestTemplate extends AbstractZg2proRestTemplate {
         this.setRequestFactory(LoggingRequestFactoryFactory.build(lri));
     }
 
+    /**
+     * a RestTemplate including your arguments for message converters and
+     * interceptors. The constructor also initializes the
+     * RestTemplateErrorHandler.
+     *
+     * @param lConverters - among which could jackson customized with the
+     * CamelCaseToKebabCase policy
+     * @param lInterceptors - among which could be LoggingRequestInterceptor
+     */
     public Zg2proRestTemplate(
             List<HttpMessageConverter<?>> lConverters, 
             List<ClientHttpRequestInterceptor> lInterceptors) {

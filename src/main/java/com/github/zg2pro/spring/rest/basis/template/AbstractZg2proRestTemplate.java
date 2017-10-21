@@ -107,19 +107,6 @@ public abstract class AbstractZg2proRestTemplate extends RestTemplate {
         this.filesStreamingOperationsHttpHeaders = filesStreamingOperationsHttpHeaders;
     }
 
-    /**
-     * a RestTemplate including logging interceptor The constructor also
-     * initializes the RestTemplateErrorHandler, and jackson is initialized with
-     * a simple ObjectMapper containing a camelCaseToKebabCase policy.
-     *
-     * Also it loads a FormHttpMessageConverter, a StringHttpMessageConverter,
-     * a, ResourceHttpMessageConverter, and a ByteArrayHttpMessageConverter, of
-     * course at build you should already have loaded your json converter
-     */
-    protected AbstractZg2proRestTemplate() {
-        this(null);
-    }
-
     private ObjectMapper camelToKebabObjectMapper(SimpleModule sm) {
         ObjectMapper jsonMapper = new ObjectMapper();
         jsonMapper.setPropertyNamingStrategy(new CamelCaseToKebabCaseNamingStrategy());
@@ -130,17 +117,6 @@ public abstract class AbstractZg2proRestTemplate extends RestTemplate {
         return jsonMapper;
     }
 
-    /**
-     * a RestTemplate including logging interceptor The constructor also
-     * initializes the RestTemplateErrorHandler, and jackson is initialized
-     * thanks to the simplemodule.
-     *
-     * Also it loads a FormHttpMessageConverter, a StringHttpMessageConverter,
-     * a, ResourceHttpMessageConverter, and a ByteArrayHttpMessageConverter, of
-     * course at build you should already have loaded your json converter
-     *
-     * @param sm
-     */
     protected AbstractZg2proRestTemplate(SimpleModule sm) {
         super();
         //converters
@@ -165,15 +141,6 @@ public abstract class AbstractZg2proRestTemplate extends RestTemplate {
 
     protected abstract void interceptorsIntegration(List<ClientHttpRequestInterceptor> lInterceptors, Object sslConfiguration);
 
-    /**
-     * a RestTemplate including your arguments for message converters and
-     * interceptors. The constructor also initializes the
-     * RestTemplateErrorHandler.
-     *
-     * @param lConverters - among which could jackson customized with the
-     * CamelCaseToKebabCase policy
-     * @param lInterceptors - among which could be LoggingRequestInterceptor
-     */
     protected AbstractZg2proRestTemplate(@Nullable List<HttpMessageConverter<?>> lConverters,
             @Nullable List<ClientHttpRequestInterceptor> lInterceptors) {
         super();
