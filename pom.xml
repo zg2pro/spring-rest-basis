@@ -15,7 +15,7 @@
     <name>spring-rest-basis</name>
     <description>A library of tools that come handy when doing spring-rest development</description>
     <packaging>jar</packaging>
-    <version>1.0-SNAPSHOT</version>
+    <version>0.4-SNAPSHOT</version>
     <url>https://github.com/zg2pro/spring-rest-basis</url>
 
     <licenses>
@@ -80,5 +80,20 @@
             </exclusions>
         </dependency>
     </dependencies>
-
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <version>3.0.2</version>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>test-jar</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
 </project>
