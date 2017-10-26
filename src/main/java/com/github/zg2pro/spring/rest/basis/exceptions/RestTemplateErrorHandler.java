@@ -43,7 +43,6 @@ public class RestTemplateErrorHandler implements ResponseErrorHandler {
     private static final Logger logger = LoggerFactory.getLogger(RestTemplateErrorHandler.class);
 
     private ObjectMapper om = new ObjectMapper();
-    //private ObjectMapper om = Zg2proRestTemplate.camelToKebabObjectMapper();
 
     @Override
     public void handleError(ClientHttpResponse response) throws IOException {
