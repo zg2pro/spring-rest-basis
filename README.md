@@ -5,6 +5,7 @@
 [![Build](https://travis-ci.org/zg2pro/spring-rest-basis.svg?branch=master)](https://travis-ci.org/zg2pro/spring-rest-basis)
 [![codecov](https://codecov.io/gh/zg2pro/spring-rest-basis/branch/master/graph/badge.svg)](https://codecov.io/gh/zg2pro/spring-rest-basis/branch/master)
 [![BCH compliance](https://bettercodehub.com/edge/badge/zg2pro/spring-rest-basis?branch=master)](https://bettercodehub.com/)
+[![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.github.zg2pro/spring-rest-basis/badge.svg)](https://maven-badges.herokuapp.com/maven-central/com.github.zg2pro/spring-rest-basis)
 
 utility configuration of spring's RestTemplate when implementing a Restful infrastructure, 
 auto-translation of variables from java to json, logging, exceptions serialization
