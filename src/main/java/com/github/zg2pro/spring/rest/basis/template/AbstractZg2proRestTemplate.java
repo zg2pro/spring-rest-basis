@@ -27,8 +27,6 @@ import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.module.SimpleModule;
 import com.github.zg2pro.spring.rest.basis.exceptions.RestTemplateErrorHandler;
-import com.github.zg2pro.spring.rest.basis.logs.LoggingRequestFactoryFactory;
-import com.github.zg2pro.spring.rest.basis.logs.LoggingRequestInterceptor;
 import java.util.ArrayList;
 import java.util.List;
 import com.github.zg2pro.spring.rest.basis.serialization.CamelCaseToKebabCaseNamingStrategy;
