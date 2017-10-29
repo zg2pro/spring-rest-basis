@@ -7,7 +7,7 @@
     <parent>
         <groupId>com.github.zg2pro</groupId>
         <artifactId>zg2pro-spring-core</artifactId>
-        <version>0.2</version>
+        <version>0.4</version>
     </parent> 
 
     <groupId>com.github.zg2pro</groupId>
