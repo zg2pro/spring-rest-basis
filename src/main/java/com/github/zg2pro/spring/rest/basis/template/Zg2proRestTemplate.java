@@ -77,7 +77,7 @@ public class Zg2proRestTemplate extends AbstractZg2proRestTemplate {
      * a, ResourceHttpMessageConverter, and a ByteArrayHttpMessageConverter, of
      * course at build you should already have loaded your json converter
      *
-     * @param sm
+     * @param sm simple module from jackson
      */
     public Zg2proRestTemplate(SimpleModule sm) {
         super(sm);

@@ -5,6 +5,7 @@ import com.github.zg2pro.spring.rest.basis.*;
 import static com.github.zg2pro.spring.rest.basis.MockedControllers.TEST_URL_FILE_DOWNLOAD;
 import static com.github.zg2pro.spring.rest.basis.MockedControllers.TEST_URL_FILE_UPLOAD;
 import com.github.zg2pro.spring.rest.basis.template.Zg2proRestTemplate;
+import com.github.zg2pro.spring.rest.basis.template.Zg2proRestTemplateBuilder;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -49,7 +50,7 @@ class ApplicationBoot {
     public TestRestTemplate zg2TestRestTemplate(ObjectProvider<RestTemplateBuilder> builderProvider, Environment environment) {
         SimpleModule sm = new SimpleModule();
         Zg2proRestTemplate rt = new Zg2proRestTemplate(sm);
-        TestRestTemplate trt = new TestRestTemplate(rt);
+        TestRestTemplate trt = new TestRestTemplate(new Zg2proRestTemplateBuilder(rt));
         trt.setUriTemplateHandler(new LocalHostUriTemplateHandler(environment));
         return trt;
     }

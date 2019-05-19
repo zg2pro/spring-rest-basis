@@ -21,27 +21,38 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package com.github.zg2pro.spring.rest.basis.exceptions;
+package com.github.zg2pro.spring.rest.basis.template;
+
+import org.springframework.boot.web.client.RestTemplateBuilder;
+import org.springframework.boot.web.client.RestTemplateCustomizer;
+import org.springframework.web.client.RestTemplate;
 
 /**
- * Manages errors triggered when querying the business application, when
- * serializing, or when deserializing
+ *
+ * Layer over spring's RestTemplate loading automatically the lib utilities
  *
  * @author zg2pro
- * @since 0.2
  */
-public class RestTemplateException extends RuntimeException {
+public class Zg2proRestTemplateBuilder extends RestTemplateBuilder {
 
-    private static final long serialVersionUID = -8401400592804985312L;
-
-    /**
-     * constructor from error message and "caused by"-element error resource
-     *
-     * @param message header message of the error
-     * @param er error resource containing all error information
-     */
-    public RestTemplateException(String message, ErrorResource er) {
-        super(message, new StackTracedException(er));
+    private Zg2proRestTemplate zrst;
+    
+    public Zg2proRestTemplateBuilder(RestTemplateCustomizer... customizers) {
+        super(customizers);
     }
 
+    public Zg2proRestTemplateBuilder(Zg2proRestTemplate inputExample) {
+        super();
+        zrst = inputExample;
+    }
+
+    @Override
+    public RestTemplate build() {
+        if (zrst == null){
+            zrst = new Zg2proRestTemplate();
+        }
+        return zrst;
+    }
+
+    
 }

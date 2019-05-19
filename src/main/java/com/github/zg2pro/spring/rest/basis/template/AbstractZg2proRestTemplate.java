@@ -127,7 +127,7 @@ public abstract class AbstractZg2proRestTemplate extends RestTemplate {
         messageConverters.add(new MappingJackson2HttpMessageConverter(jsonMapper));
         this.setMessageConverters(messageConverters);
         //errors handling
-        setErrorHandler(new RestTemplateErrorHandler());
+        this.setErrorHandler(new RestTemplateErrorHandler());
         /*
         //interceptors
         LoggingRequestInterceptor lri = new LoggingRequestInterceptor();
@@ -170,7 +170,7 @@ public abstract class AbstractZg2proRestTemplate extends RestTemplate {
      * @param url: the url toward which a file (digital object) will be sent
      * @param file: the file to upload toward the service
      * @param returnType: the return type of the webmethod
-     * @return
+     * @return the response
      */
     public <T> T postForPath(String url, Path file, Class<T> returnType) {
         return postForPathPrivate(file, url, returnType);
@@ -191,7 +191,7 @@ public abstract class AbstractZg2proRestTemplate extends RestTemplate {
      * @param url: the url toward which a file (digital object) will be sent
      * @param file: the file to upload toward the service
      * @param returnType: the return type of the webmethod
-     * @return
+     * @return the response
      * @throws java.io.IOException
      */
     public <T> T postForPathAndDelete(String url, Path file, Class<T> returnType) throws IOException {
@@ -257,9 +257,9 @@ public abstract class AbstractZg2proRestTemplate extends RestTemplate {
      * accept them as arguments. By the way, even the LoggingRequestInterceptor
      * should not be used here
      *
-     * @param serviceUrl
-     * @param tmpFilePath
-     * @return
+     * @param serviceUrl service url of the file
+     * @param tmpFilePath file path for the file
+     * @return the path object
      */
     public Path getForObject(String serviceUrl, String tmpFilePath) {
         return getForObjectPrivate(serviceUrl, tmpFilePath);
@@ -279,9 +279,9 @@ public abstract class AbstractZg2proRestTemplate extends RestTemplate {
      * performant than File from java.io and can provide all File class
      * capabilities
      *
-     * @param serviceUrl
-     * @param tmpFilePath
-     * @return
+     * @param serviceUrl service url of the file
+     * @param tmpFilePath file path for the file
+     * @return the file object
      */
     public File getForObjectAsFile(String serviceUrl, String tmpFilePath) {
         return getForObjectPrivate(serviceUrl, tmpFilePath).toFile();

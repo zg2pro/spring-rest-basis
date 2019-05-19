@@ -23,6 +23,7 @@
  */
 package com.github.zg2pro.spring.rest.basis.exceptions;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
 import org.slf4j.Logger;
@@ -43,8 +44,8 @@ public class StackTracedException extends Exception {
     /**
      * generates a stack trace from a serialized equivalent
      *
-     * @param lste
-     * @return
+     * @param lste list of traces in the stack
+     * @return the stacktrace
      */
     public static StackTraceElement[] mapper(Zg2proStackTrace lste) {
         List<StackTraceElement> stack = new ArrayList<>();
@@ -59,17 +60,17 @@ public class StackTracedException extends Exception {
     /**
      * constructor
      *
-     * @param errorResource
+     * @param errorResource StackTracedExcetion serialized
      */
-    public StackTracedException(ErrorResource errorResource) {
+    public StackTracedException(ErrorResource errorResource)  {
         super("HttpStatus:" + errorResource.getCode() + " - " + errorResource.getErrorMessage());
         try {
             // Non predifined error class. So we must use reflection method 
             Class excClazz = Class.forName(errorResource.getErrorClassName());
-            Object o = excClazz.newInstance();
+            Object o = excClazz.getDeclaredConstructor().newInstance();
             ((Throwable) o).setStackTrace(mapper(errorResource.getStackTrace()));
             initCause((Throwable) o);
-        } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | ClassCastException cnfe) {
+        } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | ClassCastException | NoSuchMethodException | IllegalArgumentException | InvocationTargetException cnfe) {
             super.setStackTrace(mapper(errorResource.getStackTrace()));
             logger.warn("exception occured when mapping an exception {}", cnfe);
         }
