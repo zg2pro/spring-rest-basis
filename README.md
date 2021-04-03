@@ -2,7 +2,7 @@
 
 [![Join the chat at https://gitter.im/spring-rest-basis/Lobby](https://badges.gitter.im/spring-rest-basis/Lobby.svg)](https://gitter.im/spring-rest-basis/Lobby?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 [![MIT](https://img.shields.io/npm/l/inferno.svg?style=flat-square)](https://github.com/zg2pro/spring-rest-basis/blob/master/LICENSE.md)
-[![Build](https://travis-ci.org/zg2pro/spring-rest-basis.svg?branch=master)](https://travis-ci.org/zg2pro/spring-rest-basis)
+[![Build](https://travis-ci.com/zg2pro/spring-rest-basis.svg?branch=master)](https://travis-ci.com/zg2pro/spring-rest-basis)
 [![codecov](https://codecov.io/gh/zg2pro/spring-rest-basis/branch/master/graph/badge.svg)](https://codecov.io/gh/zg2pro/spring-rest-basis/branch/master)
 [![BCH compliance](https://bettercodehub.com/edge/badge/zg2pro/spring-rest-basis?branch=master)](https://bettercodehub.com/)
 [![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.github.zg2pro/spring-rest-basis/badge.svg)](https://maven-badges.herokuapp.com/maven-central/com.github.zg2pro/spring-rest-basis)
